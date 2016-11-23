@@ -17,10 +17,6 @@ cv2.imshow('image', thresh1)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-svm = cv2.SVM()
-
 # plt.figure("figure_111")
 # plt.imshow(img, 'gray')
 # plt.show()
-
-print "hello"

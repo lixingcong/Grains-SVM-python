@@ -12,3 +12,6 @@ data/
 .settings/
 .pydevproject
 .project
+
+# saved model
+cv2_svm*.xml

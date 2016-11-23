@@ -35,14 +35,20 @@ with open('../data/my_cut_off/test_100.csv', 'rb')as f_csv:
 		test_x.append(img)
 		test_number += 1
 
+# opencv only support np.array array
 train_x = np.asarray(train_x, np.float32)
 train_y = np.asarray(train_y, np.float32)
 test_x = np.asarray(test_x, np.float32)
 
 clf = mySVM()
-clf.train(train_x, train_y)
-predict_values_nparray = clf.predict(test_x)
 
+choose=raw_input("1 for train from csv, 2 for load from xml")
+if choose == "1":
+	clf.train(train_x, train_y)
+else:
+	clf.load("cv2_svm_model.xml")
+	
+predict_values_nparray = clf.predict(test_x)
 predict_values = predict_values_nparray.tolist()
 
 predict_error_counter = 0
@@ -55,5 +61,5 @@ for index in range(test_number):
 print "train_num=%d, test_num=%d, predict_correct_num=%d" % (train_number, test_number, test_number - predict_error_counter)
 print "predict accuracy=%.1f%%" % (100 * float(test_number - predict_error_counter) / test_number)
 
-# svm train
-
+# save trained model
+# clf.save("cv2_svm_model.xml")
