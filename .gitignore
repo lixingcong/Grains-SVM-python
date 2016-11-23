@@ -1,0 +1,14 @@
+# data folder
+data/
+
+*.pyc
+*.swp
+*.png
+*.jpg
+*.bmp
+*.gif
+
+# eclipse
+.settings/
+.pydevproject
+.project
