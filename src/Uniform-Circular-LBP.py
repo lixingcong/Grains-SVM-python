@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # https://github.com/lionaneesh/LBP-opencv-python/blob/master/Uniform-Circular-LBP.py
 
+# 该文件不能作为算法使用，仅供注释理解LBP工作过程
+
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
@@ -9,6 +11,7 @@ import math
 
 img_file = '../data/sample.png'
 
+# 双线性插值（用于旋转）
 def bilinear_interpolation(x, y, img):
     x1, y1 = int(x), int(y)
     x2, y2 = math.ceil(x), math.ceil(y)
@@ -18,6 +21,7 @@ def bilinear_interpolation(x, y, img):
 
     return (y2 - y) / (y2 - y1) * r1 + (y - y1) / (y2 - y1) * r2    
 
+# 求pixels中元素相对于center的阈值
 def thresholded(center, pixels):
     out = []
     for a in pixels:
@@ -27,14 +31,16 @@ def thresholded(center, pixels):
             out.append(0)
     return out
 
+# 获取图片中任意一点(index_x, index_y)，无效值返回0
 def get_pixel_else_0(image, idx, idy):
     if idx < int(len(image)) - 1 and idy < len(image[0]):
         return image[idx, idy]
     else:
         return 0
 
+# 找出跳变次数（用于Uniform Pattern）
 def find_variations(pixel_values):
-    prev = pixel_values[-1]
+    prev = pixel_values[-1] # 最后一个元素
     t = 0
     for p in range(0, len(pixel_values)):
         cur = pixel_values[p]
@@ -55,7 +61,7 @@ variating_blocks = 0
 no_of_pixel_values = 0
 
 def calc_lbp():
-	global variating_blocks, pixel_values, no_of_pixel_values
+	global variating_blocks, pixel_values, no_of_pixel_values, unassigned
 	for x in range(0, len(img)):
 	    for y in range(0, len(img[0])):
 	        center = img[x, y]
@@ -72,10 +78,11 @@ def calc_lbp():
 	                    c2 = math.ceil(c)
 	                    w1 = (c2 - c) / (c2 - c1)
 	                    w2 = (c - c1) / (c2 - c1)
-	                                    
+	                    # 插值
 	                    pixels.append(int((w1 * get_pixel_else_0(img, int(r), int(c)) + \
 	                                   w2 * get_pixel_else_0(img, int(r), math.ceil(c))) / (w1 + w2)))
 	                else:
+	                	# 双线性插值
 	                    pixels.append(get_pixel_else_0(img, int(r), int(c)))
 	            elif int(c) == c:
 	                r1 = int(r)
@@ -89,21 +96,26 @@ def calc_lbp():
 	
 	
 	        values = thresholded(center, pixels)
+	        # 为了解决二进制模式过多的问题，提高统计性，Ojala提出了采用
+	        # 一种“等价模式”（Uniform Pattern）来对LBP算子的模式种类进行降维。
+	        # 即：绝大多数LBP模式最多只包含两次从1到0或从0到1的跳变
 	        variations = find_variations(values)
 	        if variations <= 2:
 	            res = 0
 	            variating_blocks += 1
 	            for a in range(0, len(values)):
-	                res += values[a] * 2 ** a
+	                res += values[a] * 2 ** a # TODO: 循环不变性需要自己另外写一个函数
 	            transformed_img.itemset((x, y), res)
 	            pixel_values.add(res)
 	        else:
 	            unassigned.append((x, y))
-	    print x
+	    #print x
 	
 	unassigned_value = len(pixel_values)
 	pixel_values = sorted(pixel_values)
 	no_of_pixel_values = len(pixel_values)
+	
+	# 使用一个字典实现list的逆向映射val->p，目的是绘制transform_img图片
 	trans_p1_u2 = {}
 	for p in range(0, len(pixel_values)):
 	    trans_p1_u2[pixel_values[p]] = p
@@ -113,24 +125,26 @@ def calc_lbp():
 	        if (r, c) in unassigned:
 	            transformed_img.itemset((r, c), unassigned_value)
 	        else:
-	            p1 = transformed_img[r, c]
+	            p1 = transformed_img[(r, c)]
 	            transformed_img.itemset((r, c), trans_p1_u2[p1])
     
 def show_plot():
-	cv2.imshow('image', img)
-	cv2.imshow('thresholded image', transformed_img)
+# 	cv2.imshow('image', img)
+# 	cv2.imshow('thresholded image', transformed_img)
 	
+	# histogram参数：第一个是输入值，第二个是对应坐标(刻度可变的坐标)，第三个是y刻度最大值
 	hist, bins = np.histogram(transformed_img.flatten(), no_of_pixel_values + 1, [0, no_of_pixel_values])
 	
+	# cumsum:返回一个累加和（概率密度分布曲线）
 	cdf = hist.cumsum()
 	cdf_normalized = cdf * hist.max() / cdf.max()
 	
 	plt.plot(cdf_normalized, color='b')
 	plt.show()
-	plt.hist(transformed_img.flatten(), no_of_pixel_values, [0, no_of_pixel_values], color='b')
-	plt.xlim([0, no_of_pixel_values])
-	plt.legend(('cdf', 'histogram'), loc='upper left')
-	plt.show()
+# 	plt.hist(transformed_img.flatten(), no_of_pixel_values, [0, no_of_pixel_values], color='b')
+# 	plt.xlim([0, no_of_pixel_values])
+# 	plt.legend(('cdf', 'histogram'), loc='upper left')
+# 	plt.show()
 	
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
