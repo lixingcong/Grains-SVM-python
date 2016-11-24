@@ -10,6 +10,7 @@ from matplotlib import pyplot as plt
 import math
 
 img_file = '../data/sample.png'
+cir_min_sum_dict={}
 
 # 双线性插值（用于旋转）
 def bilinear_interpolation(x, y, img):
@@ -49,12 +50,12 @@ def find_variations(pixel_values):
         prev = cur
     return t
    
-# 计算一个二进制列表的对应十进制值，数据存储方式：高位在list前面
+# 计算一个二进制列表的对应十进制值
 def get_hex_sum(input_list):
 	res = 0
 	len_ = len(input_list)
 	for i in range(len_):
-		res += (input_list[i] << (len_ - i - 1))
+		res += (input_list[i] << (i)) # 数据存储方式：低位在list前面
 	return res
 
 # 循环LBP的最小值
@@ -70,6 +71,20 @@ def get_cir_min_value(input_list):
 		if this_sum < cir_min_sum:
 			cir_min_sum = this_sum
 	return cir_min_sum
+
+# 生成一个Look up table，参数P为LBP周围采样点的个数
+def gen_cir_min_sum_dict(P):
+	global cir_min_sum_dict
+	max_val = 2 << P - 1
+	for i in range(max_val + 1):
+		bits = []
+		for bit in range(P):
+			bits.append((i & (1 << bit)) >> bit) # 数据存储方式：低位排在list前面
+
+		cir_min_sum_dict[i] = get_cir_min_value(bits)
+		
+def get_cir_lbp_val(sum_value):
+	return cir_min_sum_dict[sum_value]
 
 img = cv2.imread(img_file, 0)
 transformed_img = cv2.imread(img_file, 0)
