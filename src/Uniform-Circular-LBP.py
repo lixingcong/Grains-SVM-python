@@ -48,13 +48,35 @@ def find_variations(pixel_values):
             t += 1
         prev = cur
     return t
+   
+# 计算一个二进制列表的对应十进制值，数据存储方式：高位在list前面
+def get_hex_sum(input_list):
+	res = 0
+	len_ = len(input_list)
+	for i in range(len_):
+		res += (input_list[i] << (len_ - i - 1))
+	return res
+
+# 循环LBP的最小值
+def get_cir_min_value(input_list):
+	len_ = len(input_list)
+	cir_min_sum = get_hex_sum(input_list)
+	# print cir_min_sum
+	for i in range(1, len_):
+		last_element = input_list.pop(len_ - 1)
+		input_list.insert(0, last_element)
+		this_sum = get_hex_sum(input_list)
+		# print this_sum
+		if this_sum < cir_min_sum:
+			cir_min_sum = this_sum
+	return cir_min_sum
 
 img = cv2.imread(img_file, 0)
 transformed_img = cv2.imread(img_file, 0)
 unassigned = []
 pixel_values = set()
 
-P = 8  # number of pixels
+P = 8  # number of pixels ps：当8像素时候，Uniform对应有57种Uniform值，其余归类为第58类，实现直方图256维降维到58维
 R = 1  # radius 
 
 variating_blocks = 0
