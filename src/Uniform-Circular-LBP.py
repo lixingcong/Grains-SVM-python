@@ -38,17 +38,6 @@ def get_pixel_else_0(image, idx, idy):
         return image[idx, idy]
     else:
         return 0
-
-# 找出跳变次数（用于Uniform Pattern）
-def find_variations(pixel_values):
-    prev = pixel_values[-1] # 最后一个元素
-    t = 0
-    for p in range(0, len(pixel_values)):
-        cur = pixel_values[p]
-        if cur != prev:
-            t += 1
-        prev = cur
-    return t
    
 # 计算一个二进制列表的对应十进制值
 def get_sum_from_bin(input_list):
@@ -82,14 +71,16 @@ def gen_dict_sum_to_rilbp(sample_num):
 			bits.append((i & (1 << bit)) >> bit) # 数据存储方式：低位排在list前面
 
 		dict_sum_to_rilbp[i] = get_rilbp_from_bin(bits)
+
+def gen_dict_rilbp_to_histogram_x():
+	global dict_sum_to_rilbp
+	pass
 		
-def get_cir_lbp_val(sum_value):
+def get_rilbp_from_sum(sum_value):
 	return dict_sum_to_rilbp[sum_value]
 
 img = cv2.imread(img_file, 0)
 transformed_img = cv2.imread(img_file, 0)
-unassigned = []
-pixel_values = set()
 
 P = 8  # number of pixels ps：当8像素时候，Uniform对应有57种Uniform值，其余归类为第58类，实现直方图256维降维到58维
 R = 1  # radius 
@@ -97,7 +88,7 @@ R = 1  # radius
 no_of_pixel_values = 0
 
 def calc_lbp():
-	global pixel_values, no_of_pixel_values, unassigned
+	global no_of_pixel_values, unassigned
 	for x in range(0, len(img)):
 	    for y in range(0, len(img[0])):
 	        center = img[x, y]
@@ -129,48 +120,22 @@ def calc_lbp():
 	                               w2 * get_pixel_else_0(img, math.ceil(r), int(c))) / (w1 + w2))
 	            else:
 	                pixels.append(bilinear_interpolation(r, c, img))
-	
-	
+		
 	        values = thresholded(center, pixels)
-	        # 为了解决二进制模式过多的问题，提高统计性，Ojala提出了采用
-	        # 一种“等价模式”（Uniform Pattern）来对LBP算子的模式种类进行降维。
-	        # 即：绝大多数LBP模式最多只包含两次从1到0或从0到1的跳变
-	        variations = find_variations(values)
-	        res=255
-	        if variations <= 2:
-	            res = 0
-	            bits_sum=get_sum_from_bin(values)
-	            res=get_cir_lbp_val(bits_sum)
-	            transformed_img.itemset((x, y), res)
-	            pixel_values.add(res)
-	        else:
-	            unassigned.append((x, y))
-	        
-	        print "(%d,%d): res=%d"%(x,y,res)
+
+            bits_sum=get_sum_from_bin(values)
+            res=get_rilbp_from_sum(bits_sum)
+            transformed_img.itemset((x, y), res)
+            
+            print "(%d,%d): res=%d"%(x,y,res)
 	
-	unassigned_value = len(pixel_values)
-	pixel_values = sorted(pixel_values)
-	no_of_pixel_values = len(pixel_values)
-	
-	# 使用一个字典实现list的逆向映射val->p，目的是绘制transform_img图片
-	trans_p1_u2 = {}
-	for p in range(0, len(pixel_values)):
-	    trans_p1_u2[pixel_values[p]] = p
-	
-	for r in range(0, len(transformed_img)):
-	    for c in range(0, len(transformed_img[0])):
-	        if (r, c) in unassigned:
-	            transformed_img.itemset((r, c), unassigned_value)
-	        else:
-	            p1 = transformed_img[(r, c)]
-	            transformed_img.itemset((r, c), trans_p1_u2[p1])
     
 def show_plot():
 # 	cv2.imshow('image', img)
 # 	cv2.imshow('thresholded image', transformed_img)
 	
 	# histogram参数：第一个是输入值，第二个是对应坐标(刻度可变的坐标)，第三个是y刻度最大值
-	hist, bins = np.histogram(transformed_img.flatten(), no_of_pixel_values + 1, [0, no_of_pixel_values])
+	hist, bins = np.histogram(transformed_img.flatten())
 	
 	# cumsum:返回一个累加和（概率密度分布曲线）
 	cdf = hist.cumsum()
@@ -178,8 +143,8 @@ def show_plot():
 	
 # 	plt.plot(cdf_normalized, color='b')
 # 	plt.show()
-	plt.hist(transformed_img.flatten(), no_of_pixel_values, [0, no_of_pixel_values], color='b')
-	plt.xlim([0, no_of_pixel_values])
+	plt.hist(transformed_img.flatten(), color='b')
+# 	plt.xlim([0, no_of_pixel_values])
 	plt.legend(('cdf', 'histogram'), loc='upper left')
 	plt.show()
 	
