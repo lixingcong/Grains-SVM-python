@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # https://github.com/lionaneesh/LBP-opencv-python/blob/master/Uniform-Circular-LBP.py
 
-# 该文件不能作为算法使用，仅供注释理解LBP工作过程
+# 已经将uLBP重写为riLBP
 
 import numpy as np
 import cv2
@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 import math
 
 img_file = '../data/3x3.png'
-cir_min_sum_dict={}
+dict_sum_to_rilbp={}
 
 # 双线性插值（用于旋转）
 def bilinear_interpolation(x, y, img):
@@ -51,40 +51,40 @@ def find_variations(pixel_values):
     return t
    
 # 计算一个二进制列表的对应十进制值
-def get_hex_sum(input_list):
+def get_sum_from_bin(input_list):
 	res = 0
 	len_ = len(input_list)
 	for i in range(len_):
 		res += (input_list[i] << (i)) # 数据存储方式：低位在list前面
 	return res
 
-# 循环LBP的最小值
-def get_cir_min_value(input_list):
+# 循环不变LBP的最小值
+def get_rilbp_from_bin(input_list):
 	len_ = len(input_list)
-	cir_min_sum = get_hex_sum(input_list)
-	# print cir_min_sum
+	min_lbp = get_sum_from_bin(input_list)
+	# print min_lbp
 	for i in range(1, len_):
 		last_element = input_list.pop(len_ - 1)
 		input_list.insert(0, last_element)
-		this_sum = get_hex_sum(input_list)
+		this_sum = get_sum_from_bin(input_list)
 		# print this_sum
-		if this_sum < cir_min_sum:
-			cir_min_sum = this_sum
-	return cir_min_sum
+		if this_sum < min_lbp:
+			min_lbp = this_sum
+	return min_lbp
 
 # 生成一个Look up table，参数P为LBP周围采样点的个数
-def gen_cir_min_sum_dict(P):
-	global cir_min_sum_dict
-	max_val = 1 << P
+def gen_dict_sum_to_rilbp(sample_num):
+	global dict_sum_to_rilbp
+	max_val = 1 << sample_num
 	for i in range(max_val):
 		bits = []
-		for bit in range(P):
+		for bit in range(sample_num):
 			bits.append((i & (1 << bit)) >> bit) # 数据存储方式：低位排在list前面
 
-		cir_min_sum_dict[i] = get_cir_min_value(bits)
+		dict_sum_to_rilbp[i] = get_rilbp_from_bin(bits)
 		
 def get_cir_lbp_val(sum_value):
-	return cir_min_sum_dict[sum_value]
+	return dict_sum_to_rilbp[sum_value]
 
 img = cv2.imread(img_file, 0)
 transformed_img = cv2.imread(img_file, 0)
@@ -139,7 +139,7 @@ def calc_lbp():
 	        res=255
 	        if variations <= 2:
 	            res = 0
-	            bits_sum=get_hex_sum(values)
+	            bits_sum=get_sum_from_bin(values)
 	            res=get_cir_lbp_val(bits_sum)
 	            transformed_img.itemset((x, y), res)
 	            pixel_values.add(res)
@@ -187,6 +187,6 @@ def show_plot():
 	cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-	gen_cir_min_sum_dict(P)
+	gen_dict_sum_to_rilbp(P)
 	calc_lbp()
 	show_plot()
