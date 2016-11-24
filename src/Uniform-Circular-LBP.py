@@ -11,6 +11,9 @@ import math
 
 img_file = '../data/3x3.png'
 dict_sum_to_rilbp={}
+dict_rilbp_to_histogram_x={}
+histogram_x_width=0
+histogram_result=[]
 
 # 双线性插值（用于旋转）
 def bilinear_interpolation(x, y, img):
@@ -72,12 +75,23 @@ def gen_dict_sum_to_rilbp(sample_num):
 
 		dict_sum_to_rilbp[i] = get_rilbp_from_bin(bits)
 
+# 生成一个Look up table 将riLBP的所有值映射到直方图的横坐标
 def gen_dict_rilbp_to_histogram_x():
-	global dict_sum_to_rilbp
-	pass
+	global dict_sum_to_rilbp,dict_rilbp_to_histogram_x,histogram_x_width,histogram_result
+	
+	set_rilbp=set()
+	for key in dict_sum_to_rilbp:
+		set_rilbp.add(dict_sum_to_rilbp[key])
+	
+	dict_rilbp_to_histogram_x={}
+	index=0
+	for rilbp in sorted(set_rilbp):
+		dict_rilbp_to_histogram_x[rilbp]=index
+		index+=1
 		
-def get_rilbp_from_sum(sum_value):
-	return dict_sum_to_rilbp[sum_value]
+	histogram_x_width=index
+	histogram_result=[0]*histogram_x_width
+	
 
 img = cv2.imread(img_file, 0)
 transformed_img = cv2.imread(img_file, 0)
@@ -123,35 +137,31 @@ def calc_lbp():
 		
 	        values = thresholded(center, pixels)
 
-            bits_sum=get_sum_from_bin(values)
-            res=get_rilbp_from_sum(bits_sum)
-            transformed_img.itemset((x, y), res)
+            rilbp=get_rilbp_from_bin(values)
+            histogram_x=dict_rilbp_to_histogram_x[rilbp]
+            transformed_img.itemset((x, y), rilbp)
             
-            print "(%d,%d): res=%d"%(x,y,res)
+            histogram_result[histogram_x]+=1
+                    
+            print "(%d,%d): rilbp=%d, histogram_x=%d"%(x,y,rilbp,histogram_x)
 	
     
 def show_plot():
 # 	cv2.imshow('image', img)
 # 	cv2.imshow('thresholded image', transformed_img)
 	
-	# histogram参数：第一个是输入值，第二个是对应坐标(刻度可变的坐标)，第三个是y刻度最大值
-	hist, bins = np.histogram(transformed_img.flatten())
-	
-	# cumsum:返回一个累加和（概率密度分布曲线）
-	cdf = hist.cumsum()
-	cdf_normalized = cdf * hist.max() / cdf.max()
-	
-# 	plt.plot(cdf_normalized, color='b')
-# 	plt.show()
-	plt.hist(transformed_img.flatten(), color='b')
-# 	plt.xlim([0, no_of_pixel_values])
-	plt.legend(('cdf', 'histogram'), loc='upper left')
+	x = range(histogram_x_width)
+	y = histogram_result
+	plt.bar(x, y, color = 'r')
+
+	plt.title("histogram")
 	plt.show()
 	
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
-
+	
 if __name__ == '__main__':
 	gen_dict_sum_to_rilbp(P)
+	gen_dict_rilbp_to_histogram_x()
 	calc_lbp()
 	show_plot()
