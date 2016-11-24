@@ -16,6 +16,8 @@ histogram_result = []
 
 img_file = '../data/sample.png'
 img = cv2.imread(img_file, 0)
+# resize
+# img = cv2.resize(img,(48,48), interpolation = cv2.INTER_CUBIC)
 
 P = 8  # number of pixels ps：当8像素时候，Uniform对应有57种Uniform值，其余归类为第58类，实现直方图256维降维到58维
 R = 1  # radius
@@ -142,6 +144,7 @@ def calc_lbp():
 def show_plot():
 	x = range(histogram_x_width)
 	y = histogram_result
+	print histogram_result
 	plt.bar(x, y, color='r')
 
 	plt.title("histogram")
