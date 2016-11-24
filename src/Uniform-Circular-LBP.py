@@ -94,11 +94,10 @@ pixel_values = set()
 P = 8  # number of pixels ps：当8像素时候，Uniform对应有57种Uniform值，其余归类为第58类，实现直方图256维降维到58维
 R = 1  # radius 
 
-variating_blocks = 0
 no_of_pixel_values = 0
 
 def calc_lbp():
-	global variating_blocks, pixel_values, no_of_pixel_values, unassigned
+	global pixel_values, no_of_pixel_values, unassigned
 	for x in range(0, len(img)):
 	    for y in range(0, len(img[0])):
 	        center = img[x, y]
@@ -139,9 +138,8 @@ def calc_lbp():
 	        variations = find_variations(values)
 	        if variations <= 2:
 	            res = 0
-	            variating_blocks += 1
-	            for a in range(0, len(values)):
-	                res += values[a] * 2 ** a # TODO: 循环不变性需要自己另外写一个函数
+	            bits_sum=get_hex_sum(values)
+	            res=get_cir_lbp_val(bits_sum)
 	            transformed_img.itemset((x, y), res)
 	            pixel_values.add(res)
 	        else:
@@ -187,5 +185,6 @@ def show_plot():
 	cv2.destroyAllWindows()
 
 if __name__ == '__main__':
+	gen_cir_min_sum_dict(P)
 	calc_lbp()
 	show_plot()
