@@ -9,7 +9,7 @@ import cv2
 from matplotlib import pyplot as plt
 import math
 
-img_file = '../data/sample.png'
+img_file = '../data/3x3.png'
 cir_min_sum_dict={}
 
 # 双线性插值（用于旋转）
@@ -75,8 +75,8 @@ def get_cir_min_value(input_list):
 # 生成一个Look up table，参数P为LBP周围采样点的个数
 def gen_cir_min_sum_dict(P):
 	global cir_min_sum_dict
-	max_val = 2 << P - 1
-	for i in range(max_val + 1):
+	max_val = 1 << P
+	for i in range(max_val):
 		bits = []
 		for bit in range(P):
 			bits.append((i & (1 << bit)) >> bit) # 数据存储方式：低位排在list前面
@@ -136,6 +136,7 @@ def calc_lbp():
 	        # 一种“等价模式”（Uniform Pattern）来对LBP算子的模式种类进行降维。
 	        # 即：绝大多数LBP模式最多只包含两次从1到0或从0到1的跳变
 	        variations = find_variations(values)
+	        res=255
 	        if variations <= 2:
 	            res = 0
 	            bits_sum=get_hex_sum(values)
@@ -144,7 +145,8 @@ def calc_lbp():
 	            pixel_values.add(res)
 	        else:
 	            unassigned.append((x, y))
-	    #print x
+	        
+	        print "(%d,%d): res=%d"%(x,y,res)
 	
 	unassigned_value = len(pixel_values)
 	pixel_values = sorted(pixel_values)
@@ -174,12 +176,12 @@ def show_plot():
 	cdf = hist.cumsum()
 	cdf_normalized = cdf * hist.max() / cdf.max()
 	
-	plt.plot(cdf_normalized, color='b')
-	plt.show()
-# 	plt.hist(transformed_img.flatten(), no_of_pixel_values, [0, no_of_pixel_values], color='b')
-# 	plt.xlim([0, no_of_pixel_values])
-# 	plt.legend(('cdf', 'histogram'), loc='upper left')
+# 	plt.plot(cdf_normalized, color='b')
 # 	plt.show()
+	plt.hist(transformed_img.flatten(), no_of_pixel_values, [0, no_of_pixel_values], color='b')
+	plt.xlim([0, no_of_pixel_values])
+	plt.legend(('cdf', 'histogram'), loc='upper left')
+	plt.show()
 	
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
