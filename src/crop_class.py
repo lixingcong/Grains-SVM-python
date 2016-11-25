@@ -20,8 +20,10 @@ class CROP_IMG(object):
 			assert pixels_split is not None
 			self.is_pixel_mode=True
 			self.pixels_spilt_horizontal, self.pixels_spilt_vertical=pixels_split
+			self.blocks_spilt_horizontal, self.blocks_spilt_vertical=0,0
 		else:
 			self.is_pixel_mode=False
+			self.pixels_spilt_horizontal, self.pixels_spilt_vertical=0,0
 			self.blocks_spilt_horizontal, self.blocks_spilt_vertical=blks_split
 		
 		self.img=None
@@ -43,21 +45,21 @@ class CROP_IMG(object):
 		self._assert_shape()
 		splited_blocks=[]
 		if self.is_pixel_mode:
-			# 图像块的数目
-			blocks_num_horizontal = self.img_width / self.pixels_spilt_horizontal
-			blocks_num_vertical = self.img_height / self.pixels_spilt_vertical
-			for block_num_vertical in range(blocks_num_vertical):
-				y1=self.pixels_spilt_vertical*block_num_vertical
-				y2=y1+self.pixels_spilt_vertical
-				
-				for block_num_horizontal in range(blocks_num_horizontal):
-					x1=self.pixels_spilt_horizontal*block_num_horizontal
-					x2=x1+self.pixels_spilt_horizontal
-							
-					# print "(%d:%d),(%d,%d)"%(x1,x2,y1,y2)
-					splited_blocks.append(self.img[y1:y2,x1:x2])
+			self.blocks_spilt_horizontal = self.img_width / self.pixels_spilt_horizontal
+			self.blocks_spilt_vertical = self.img_height / self.pixels_spilt_vertical
 		else:
-			pass
+			self.pixels_spilt_horizontal=self.img_width/self.blocks_spilt_horizontal
+			self.pixels_spilt_vertical=self.img_height/self.blocks_spilt_vertical
+		
+		for block_num_vertical in range(self.blocks_spilt_vertical):
+			y1=self.pixels_spilt_vertical*block_num_vertical
+			y2=y1+self.pixels_spilt_vertical
+			
+			for block_num_horizontal in range(self.blocks_spilt_horizontal):
+				x1=self.pixels_spilt_horizontal*block_num_horizontal
+				x2=x1+self.pixels_spilt_horizontal
+				# split by pixels
+				splited_blocks.append(self.img[y1:y2,x1:x2])
 		
 		return splited_blocks
 if __name__ == '__main__':
@@ -68,6 +70,7 @@ if __name__ == '__main__':
 	img_resized = cv2.resize(img_gray, (4, 6), interpolation=cv2.INTER_CUBIC)
 	print img_resized
 	
+# 	crop=CROP_IMG(blks_split=[2,3], pixels_split=None)
 	crop=CROP_IMG(blks_split=None, pixels_split=[2,3])
 	img_got=crop.get_cropped_images(img_resized)
 	#sys.exit(0)
