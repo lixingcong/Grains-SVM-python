@@ -116,7 +116,7 @@ class my_riLBP(object):
 		# 遍历像素
 		for x in range(self.img_width):
 			for y in range(self.img_height):
-				center = self.img[y, x]
+				center = self._get_pixel_else_0(x, y)
 				pixels = []  # 邻居像素列表
 				for point in range(1, self.lbp_neighbors + 1):
 					r = x + self.lbp_radius * math.cos(2 * math.pi * point / self.lbp_neighbors)  # x
