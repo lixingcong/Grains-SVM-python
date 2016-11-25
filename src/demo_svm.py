@@ -7,7 +7,7 @@ Created on 2016年11月23日
 '''
 
 import csv
-from svm_class import mySVM
+from class_svm import mySVM
 import numpy as np
 import sys
 

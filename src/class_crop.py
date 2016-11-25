@@ -11,12 +11,12 @@ import cv2
 import sys
 
 class CROP_IMG(object):
-	def __init__(self, blks_split=None, pixels_split=None):
+	def __init__(self, blocks_split=None, pixels_split=None):
 		# params:
-		# input_img    is an cv2 image object
-		# blks_split   is a list [blks_horizontal,   blks_vertical  ]
-		# pixels_split is a list [pixels_horizontal, pixels_vertical]
-		if blks_split is None:
+		# input_img    is an cv2 image object. Generally it is a numpy.ndarray
+		# blocks_split is a 2-element list [blks_horizontal,   blks_vertical  ]
+		# pixels_split is a 2-element list [pixels_horizontal, pixels_vertical]
+		if blocks_split is None:
 			assert pixels_split is not None
 			self.is_pixel_mode = True
 			self.pixels_spilt_horizontal, self.pixels_spilt_vertical = pixels_split
@@ -24,7 +24,7 @@ class CROP_IMG(object):
 		else:
 			self.is_pixel_mode = False
 			self.pixels_spilt_horizontal, self.pixels_spilt_vertical = 0, 0
-			self.blocks_spilt_horizontal, self.blocks_spilt_vertical = blks_split
+			self.blocks_spilt_horizontal, self.blocks_spilt_vertical = blocks_split
 		
 		self.img = None
 	
@@ -66,14 +66,15 @@ class CROP_IMG(object):
 	
 if __name__ == '__main__':
 	img = cv2.imread("../data/sample.png")
+	print type(img)
 	img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
 	print '-' * 10
 	img_resized = cv2.resize(img_gray, (4, 6), interpolation=cv2.INTER_CUBIC)
 	print img_resized
 	
-# 	crop=CROP_IMG(blks_split=[2,3], pixels_split=None)
-	crop = CROP_IMG(blks_split=None, pixels_split=[2, 3])
+# 	crop=CROP_IMG(blocks_split=[2,3], pixels_split=None)
+	crop = CROP_IMG(blocks_split=None, pixels_split=[2, 3])
 	img_got = crop.get_cropped_images(img_resized)
 
 	for i in range(len(img_got)):
