@@ -21,12 +21,17 @@ class mySVM(StatModel):
 	def __init__(self):
 		self.model = cv2.SVM()
 	
-	def train(self, samples, responses):
+	def train(self, samples, responses,C=None,gamma=None):
+		param_C=1 if C is None else C
+		param_gamma=(1.0/len(samples[0])) if gamma is None else gamma 
+		
+		print "c,gamma=",param_C,param_gamma
+		
 		# setting algorithm parameters
 		params = dict(kernel_type=cv2.SVM_RBF,
 		               svm_type=cv2.SVM_C_SVC,
-		               C=1,
-		               gamma=0.026
+		               C=param_C,
+		               gamma=param_gamma
 		               )
 		self.model.train(samples, responses, params=params)
 	

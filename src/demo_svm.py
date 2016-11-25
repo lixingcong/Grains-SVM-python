@@ -9,6 +9,7 @@ Created on 2016年11月23日
 import csv
 from svm_class import mySVM
 import numpy as np
+import sys
 
 train_y, train_x = [], []
 train_number = 0
@@ -42,9 +43,11 @@ test_x = np.asarray(test_x, np.float32)
 
 clf = mySVM()
 
+is_need_to_save=False
 choose=raw_input("1 for train from csv, 2 for load from xml")
 if choose == "1":
-	clf.train(train_x, train_y)
+	clf.train(train_x, train_y,C=1,gamma=0.026)
+	is_need_to_save=True
 else:
 	clf.load("cv2_svm_model.xml")
 	
@@ -62,4 +65,5 @@ print "train_num=%d, test_num=%d, predict_correct_num=%d" % (train_number, test_
 print "predict accuracy=%.1f%%" % (100 * float(test_number - predict_error_counter) / test_number)
 
 # save trained model
-# clf.save("cv2_svm_model.xml")
+if is_need_to_save:
+	clf.save("cv2_svm_model.xml")
