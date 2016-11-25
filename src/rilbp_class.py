@@ -108,6 +108,11 @@ class my_riLBP(object):
 			self.img = cv2.cvtColor(input_img, cv2.COLOR_RGB2GRAY)
 		else:
 			self.img = input_img
+
+		# initialize result
+		for i in range(len(self.histogram_result)):
+			self.histogram_result[i]=0
+
 		# 遍历像素
 		for x in range(self.img_width):
 			for y in range(self.img_height):
