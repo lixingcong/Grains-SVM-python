@@ -154,6 +154,9 @@ class my_riLBP(object):
 				# print "(%d,%d): rilbp=%d, histogram_x=%d"%(x,y,rilbp,histogram_x)
 	
 		return self.histogram_result
+
+	def get_histogram_x_width(self):
+		return self.histogram_x_width
 	
 if __name__ == '__main__':
 	img_file = '../data/sample.png'
