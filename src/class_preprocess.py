@@ -17,7 +17,7 @@ class myPreprocess(object):
 		self.img_gray = None
 		self.img_bin = None
 		
-		self._resized(w=resize[0], h=resize[1])
+		self._resize(w=resize[0], h=resize[1])
 		self._filter()
 		self._rgb2gray()
 		self._gray2binary(thresh=130, maxval=255)
@@ -30,7 +30,7 @@ class myPreprocess(object):
 		img_thresh = cv2.threshold(self.img_gray, thresh, maxval, cv2.THRESH_BINARY)[1]
 		self.img_bin = 255 - img_thresh
 		
-	def _resized(self, w, h):
+	def _resize(self, w, h):
 		self.img = cv2.resize(self.img, (w, h), interpolation=cv2.INTER_CUBIC)
 	
 	def _filter(self):
