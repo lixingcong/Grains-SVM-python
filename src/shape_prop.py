@@ -9,23 +9,27 @@ Hu不变矩：
   - 具有平移、旋转、尺度不变性
   - 得出7个分量，但是实际应用中只用前2个分量
 '''
+# TODO: 修改为最大的边界countours，取出边缘
 
 import cv2
 from class_preprocess import my_Preprocess
 import numpy as np
 
 class my_SHAPE(object):
-	def __init__(self,input_gray,thresh=100):
-		self.img=input_gray
+	def __init__(self,img_gray,img_bin,thresh=20):
+		self.img=img_gray
+		self.img_blur=None
+		self.img_bin=img_bin
 		self.contours=None
 		self.hierarchy=None
 		self.thresh=thresh
 		self.thresh_max=255
-		self._find_contours(self.thresh)
 
+		self._find_contours(self.thresh)
+		
 	# 找出轮廓
 	def _find_contours(self,thresh):
-		edges = cv2.Canny(self.img,thresh,thresh*2)
+		edges = cv2.Canny(self.img_bin,thresh,thresh*2)
 		self.contours,self.hierarchy=cv2.findContours(edges,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
 	def _callback_draw_contours(self,thresh):
@@ -70,6 +74,6 @@ class my_SHAPE(object):
 
 if __name__ == '__main__':
 	mypreprocess=my_Preprocess("../data/s.png",[48,48])
-	myshape=my_SHAPE(mypreprocess.get_img_gray())
+	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())
 	#myshape.get_moments()
 	myshape.draw_contours()
