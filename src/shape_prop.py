@@ -19,6 +19,7 @@ class my_SHAPE(object):
 		self.img=img_gray
 		self.img_bin=img_bin
 		self.contours=None
+		self.contours_largest=None
 		self.hierarchy=None
 		self.canny_thresh=canny_thresh
 		self.thresh_max=255
@@ -45,6 +46,21 @@ class my_SHAPE(object):
 	def _show_all_windows(self):
 		if cv2.waitKey(0) == 27:
 			cv2.destroyAllWindows()
+	
+	# 在找到边缘前提下，获取最大面积的边缘
+	def _get_contours_largest(self):
+		area_largest=0
+		area_largest_cnt=[]
+		moments={}
+		for cnt in self.contours:
+			moments = cv2.moments(cnt)                          # Calculate moments
+			if moments['m00']!=0:
+				moment_area = moments['m00']                    # Contour area from moment
+				if area_largest<moment_area:
+					area_largest=moment_area
+					area_largest_cnt=cnt
+		
+		return (area_largest_cnt,moments,)
 
 	# 滑动Trackbar的回调函数，动态绘制不同canny阈值的边缘图像
 	def _callback_draw_contours(self,thresh):
@@ -87,19 +103,10 @@ class my_SHAPE(object):
 	# 绘制面积最大的边缘
 	def draw_contours_largest(self):	
 		self._find_contours(self.canny_thresh)
-		area_largest=0
-		area_largest_cnt=[]
-		drawing = np.zeros(self.img.shape,np.uint8)                  # Image to draw the contours
-		
-		for cnt in self.contours:
-			moments = cv2.moments(cnt)                          # Calculate moments
-			if moments['m00']!=0:
-				moment_area = moments['m00']                    # Contour area from moment
-				if area_largest<moment_area:
-					area_largest=moment_area
-					area_largest_cnt=cnt
-				
-		cv2.drawContours(drawing,[area_largest_cnt,],0,255,1)   # draw contours 
+		cnt,moments=self._get_contours_largest()
+
+		drawing = np.zeros(self.img.shape,np.uint8)# Image to draw the contours
+		cv2.drawContours(drawing,[cnt,],0,255,1)   # draw contours 
 			
 		# 添加一个属性可以调节窗口大小
 		windows_width=300
@@ -107,10 +114,19 @@ class my_SHAPE(object):
 		cv2.imshow('output',drawing)
 		cv2.imshow('input',self.img)
 		self._show_all_windows()
-
+		
+	def get_humoments(self):
+		self._find_contours(self.canny_thresh)
+		cnt,moments=self._get_contours_largest()
+		return cv2.HuMoments(moments)
+		
 if __name__ == '__main__':
-	mypreprocess=my_Preprocess("../data/s.png",[48,48])
-	cv2.imshow("bin",mypreprocess.get_img_binary())
-	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
-# 	myshape.draw_contours()
-	myshape.draw_contours_largest()
+	prefix_name="yundou-"
+	for i in range(1,11):
+		mypreprocess=my_Preprocess("../data/grains/"+prefix_name+str(i)+".png",[48,48])
+		#cv2.imshow("bin",mypreprocess.get_img_binary())
+		myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
+		#myshape.draw_contours()
+		# myshape.draw_contours_largest()
+		print prefix_name,i,":",'-'*20
+		print myshape.get_humoments()[0][0]
