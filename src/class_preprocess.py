@@ -29,7 +29,8 @@ class my_Preprocess(object):
 		self.img_gray = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
 		
 	def _gray2binary(self, thresh=127, maxval=255):
-		img_thresh = cv2.threshold(self.img_gray, thresh, maxval, cv2.THRESH_BINARY)[1]
+		ret,img_thresh = cv2.threshold(self.img_gray, thresh, maxval, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+		print "pre-process: gray2binary, OTUS thresh=",ret
 		self.img_bin = 255 - img_thresh
 		
 	def _resize(self, w, h):
