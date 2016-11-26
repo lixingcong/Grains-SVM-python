@@ -13,6 +13,7 @@ Hu不变矩：
 import cv2
 from class_preprocess import my_Preprocess
 import numpy as np
+import sys
 
 class my_SHAPE(object):
 	def __init__(self,img_gray,img_bin,canny_thresh=127):
@@ -121,6 +122,12 @@ class my_SHAPE(object):
 		return cv2.HuMoments(moments)
 		
 if __name__ == '__main__':
+	mypreprocess=my_Preprocess("../data/yundou-1.png",[48,48])
+	cv2.imshow("bin",mypreprocess.get_img_binary())
+	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
+	myshape.draw_contours_largest()
+	
+	sys.exit(0)
 	prefix_name="yundou-"
 	for i in range(1,11):
 		mypreprocess=my_Preprocess("../data/grains/"+prefix_name+str(i)+".png",[48,48])
