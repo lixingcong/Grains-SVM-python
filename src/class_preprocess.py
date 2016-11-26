@@ -17,7 +17,9 @@ class my_Preprocess(object):
 		self.img_gray = None
 		self.img_bin = None
 		
-		self._resize(w=resize[0], h=resize[1])
+		if resize[0]!=0 or resize[1]!=0:
+			self._resize(w=resize[0], h=resize[1])
+			
 		self._filter()
 		self._rgb2gray()
 		self._gray2binary(thresh=130, maxval=255)
