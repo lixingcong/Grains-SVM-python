@@ -9,7 +9,7 @@ Created on 2016年11月26日
 
 import cv2
 import numpy as np
-from class_preprocess import myPreprocess
+from class_preprocess import my_Preprocess
 
 # 输入彩色和二值化图像即可
 def get_rgb_normolized(input_img, input_img_bin):
@@ -37,5 +37,5 @@ def get_rgb_normolized(input_img, input_img_bin):
 	return (R / sum_BGR_last, G / sum_BGR_last, B / sum_BGR_last,)
 	
 if __name__ == '__main__':
-	pic_prep = myPreprocess("../data/s.png")
+	pic_prep = my_Preprocess("../data/s.png")
 	print get_rgb_normolized(pic_prep.get_img(), pic_prep.get_img_binary())

@@ -10,7 +10,7 @@ import cv2
 from matplotlib import pyplot as plt
 import math
 
-class my_riLBP(object):
+class my_RILBP(object):
 	def __init__(self, radius=1, neighbors=8):
 		self.img_height = 0
 		self.img_width = 0
@@ -164,7 +164,7 @@ if __name__ == '__main__':
 	img = cv2.resize(img, (48, 48), interpolation=cv2.INTER_CUBIC)
 	
 	# LBP
-	my_rilbp = my_riLBP(radius=1, neighbors=8)
+	my_rilbp = my_RILBP(radius=1, neighbors=8)
 	histogram_result = my_rilbp.get_lbp_histogram(img)
 	print histogram_result
 	

@@ -11,7 +11,7 @@ import cv2
 import numpy as np
 import sys
 
-class myPreprocess(object):
+class my_Preprocess(object):
 	def __init__(self, img_filename, resize=[48, 48]):
 		self.img = cv2.imread(img_filename)
 		self.img_gray = None
@@ -62,7 +62,7 @@ class myPreprocess(object):
 		return self.img_bin
 	
 if __name__ == '__main__':
-	mypreprocess = myPreprocess("../data/s.png")
+	mypreprocess = my_Preprocess("../data/s.png")
 	
 	
 	cv2.imshow('image1', mypreprocess.get_img())

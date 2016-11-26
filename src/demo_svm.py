@@ -7,7 +7,7 @@ Created on 2016年11月23日
 '''
 
 import csv
-from class_svm import mySVM
+from class_svm import my_SVM
 import numpy as np
 import sys
 
@@ -41,7 +41,7 @@ train_x = np.asarray(train_x, np.float32)
 train_y = np.asarray(train_y, np.float32)
 test_x = np.asarray(test_x, np.float32)
 
-clf = mySVM()
+clf = my_SVM()
 
 is_need_to_save=False
 choose=raw_input("1 for train from csv, 2 for load from xml")

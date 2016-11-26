@@ -10,7 +10,7 @@ Created on 2016年11月25日
 import cv2
 import sys
 
-class CROP_IMG(object):
+class my_Crop(object):
 	def __init__(self, blocks_split=None, pixels_split=None):
 		# params:
 		# input_img    is an cv2 image object. Generally it is a numpy.ndarray
@@ -73,8 +73,8 @@ if __name__ == '__main__':
 	img_resized = cv2.resize(img_gray, (4, 6), interpolation=cv2.INTER_CUBIC)
 	print img_resized
 	
-# 	crop=CROP_IMG(blocks_split=[2,3], pixels_split=None)
-	crop = CROP_IMG(blocks_split=None, pixels_split=[2, 3])
+# 	crop=my_Crop(blocks_split=[2,3], pixels_split=None)
+	crop = my_Crop(blocks_split=None, pixels_split=[2, 3])
 	img_got = crop.get_cropped_images(img_resized)
 
 	for i in range(len(img_got)):

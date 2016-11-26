@@ -16,7 +16,7 @@ class StatModel(object):
 	def save(self, fn):
 		self.model.save(fn)
 
-class mySVM(StatModel):
+class my_SVM(StatModel):
 	'''wrapper for OpenCV SimpleVectorMachine algorithm'''
 	def __init__(self):
 		self.model = cv2.SVM()
