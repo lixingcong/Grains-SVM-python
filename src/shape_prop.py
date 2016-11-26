@@ -40,8 +40,9 @@ class my_SHAPE(object):
 				cy = int(moments['m01']/moments['m00'])         # cy = M01/M00
 				moment_area = moments['m00']                    # Contour area from moment
 				contour_area = cv2.contourArea(cnt)             # Contour area using in_built function
-				cv2.drawContours(drawing,[cnt],0,127,1)   # draw contours in green color
-				cv2.circle(drawing,(cx,cy),5,50,-1)      # draw centroids in red color
+				cv2.drawContours(drawing,[cnt],0,127,1)   # draw contours 
+				cv2.circle(drawing,(cx,cy),3,50,-1)      # draw centroids
+		
 		cv2.imshow('output',drawing)
 		cv2.imshow('input',self.img)
 		
@@ -49,8 +50,16 @@ class my_SHAPE(object):
 		if thresh_max is None:
 			thresh_max=self.thresh_max
 			
-		cv2.namedWindow('input')
-		cv2.createTrackbar('canny thresh:','input',self.thresh,thresh_max,self._callback_draw_contours)
+		# 添加一个属性可以调节窗口大小
+		windows_width=300
+		cv2.namedWindow('input',cv2.WINDOW_NORMAL)
+		cv2.resizeWindow('input', windows_width,windows_width)
+		cv2.namedWindow('output',cv2.WINDOW_NORMAL)
+		cv2.resizeWindow('output', windows_width,windows_width)
+		cv2.namedWindow('bar',cv2.WINDOW_NORMAL)
+		cv2.resizeWindow('bar', 400,10)
+		
+		cv2.createTrackbar('canny thresh:','bar',self.thresh,thresh_max,self._callback_draw_contours)
 		self._callback_draw_contours(self.thresh)
 		if cv2.waitKey(0) == 27:
 			cv2.destroyAllWindows()
@@ -60,7 +69,7 @@ class my_SHAPE(object):
 
 
 if __name__ == '__main__':
-	mypreprocess=my_Preprocess("../data/s.png",[0,0])
+	mypreprocess=my_Preprocess("../data/s.png",[48,48])
 	myshape=my_SHAPE(mypreprocess.get_img_gray())
 	#myshape.get_moments()
 	myshape.draw_contours()
