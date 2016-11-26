@@ -16,7 +16,7 @@ import numpy as np
 import sys
 
 class my_SHAPE(object):
-	def __init__(self,img_gray,img_bin,canny_thresh=127):
+	def __init__(self,img_gray,img_bin,canny_thresh=20):
 		self.img=img_gray
 		self.img_bin=img_bin
 		self.contours=None
@@ -25,11 +25,12 @@ class my_SHAPE(object):
 		self.canny_thresh=canny_thresh
 		self.thresh_max=255
 		
+		# 形态学滤波，预处理，将canny边缘缺口补上
 		self._morphology(radius=5)
 		
 	# 找出轮廓
 	def _find_contours(self,thresh):
-		edges = cv2.Canny(self.img_bin,thresh,thresh*2)
+		edges = cv2.Canny(self.img,thresh,thresh*2)
 		self.contours,self.hierarchy=cv2.findContours(edges,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 		
 	def _morphology(self, radius):
@@ -52,7 +53,7 @@ class my_SHAPE(object):
 	def _get_contours_largest(self):
 		area_largest=0
 		area_largest_cnt=[]
-		moments={}
+		moments_largest={}
 		for cnt in self.contours:
 			moments = cv2.moments(cnt)                          # Calculate moments
 			if moments['m00']!=0:
@@ -60,8 +61,9 @@ class my_SHAPE(object):
 				if area_largest<moment_area:
 					area_largest=moment_area
 					area_largest_cnt=cnt
+					moments_largest=moments
 		
-		return (area_largest_cnt,moments,)
+		return (area_largest_cnt,moments_largest,)
 
 	# 滑动Trackbar的回调函数，动态绘制不同canny阈值的边缘图像
 	def _callback_draw_contours(self,thresh):
@@ -122,13 +124,15 @@ class my_SHAPE(object):
 		return cv2.HuMoments(moments)
 		
 if __name__ == '__main__':
-	mypreprocess=my_Preprocess("../data/yundou-1.png",[48,48])
-	cv2.imshow("bin",mypreprocess.get_img_binary())
-	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
-	myshape.draw_contours_largest()
+# 	mypreprocess=my_Preprocess("../data/grains/lvdou-3.png",[48,48])
+# 	cv2.namedWindow('bin',cv2.WINDOW_NORMAL)
+# 	cv2.resizeWindow('bin', 300,300)
+# 	cv2.imshow("bin",mypreprocess.get_img())
+# 	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
+# 	myshape.draw_contours_largest()
+# 	sys.exit(0)
 	
-	sys.exit(0)
-	prefix_name="yundou-"
+	prefix_name="huangdou-"
 	for i in range(1,11):
 		mypreprocess=my_Preprocess("../data/grains/"+prefix_name+str(i)+".png",[48,48])
 		#cv2.imshow("bin",mypreprocess.get_img_binary())
