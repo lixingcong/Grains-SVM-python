@@ -24,6 +24,7 @@ class my_Preprocess(object):
 		self._rgb2gray()
 		self._gray2binary(thresh=130, maxval=255)
 		self._morphology(radius=3)
+		self._patch_img_bin_edge()
 		
 	def _rgb2gray(self):
 		self.img_gray = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
@@ -51,8 +52,16 @@ class my_Preprocess(object):
 	
 	def _morphology(self, radius=3):
 		# 形态学滤波:对大米不好处理，薏米有两个沟
-		kernel = np.ones((radius, radius), np.uint8)
+		kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(radius,radius))
 		self.img_bin = cv2.morphologyEx(self.img_bin, cv2.MORPH_CLOSE, kernel)
+	
+	# 描黑边，防止寻找边缘时候溢出	
+	def _patch_img_bin_edge(self):
+		height,width=self.img_bin.shape
+		self.img_bin[0,:]=0
+		self.img_bin[height-1,:]=0
+		self.img_bin[:,0]=0
+		self.img_bin[:,width-1]=0
 		
 	def get_img(self):
 		return self.img
@@ -65,7 +74,7 @@ class my_Preprocess(object):
 		return self.img_bin
 	
 if __name__ == '__main__':
-	mypreprocess = my_Preprocess("../data/s.png")
+	mypreprocess = my_Preprocess("../data/yundou-2.png")
 	
 	
 	cv2.imshow('image1', mypreprocess.get_img())
