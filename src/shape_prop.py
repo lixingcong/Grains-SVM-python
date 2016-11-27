@@ -118,10 +118,14 @@ class my_SHAPE(object):
 		cv2.imshow('input',self.img)
 		self._show_all_windows()
 		
+	# 仅返回归一化的 Hu(1)，范围为0~1（手工截取)
 	def get_humoments(self):
 		self._find_contours(self.canny_thresh)
 		cnt,moments=self._get_contours_largest()
-		return cv2.HuMoments(moments)
+		Hu_1=cv2.HuMoments(moments)[0][0]
+		if Hu_1<=0.0:return 0.0
+		if Hu_1>=1.0:return 1.0
+		return Hu_1
 		
 if __name__ == '__main__':
 # 	mypreprocess=my_Preprocess("../data/grains/lvdou-3.png",[48,48])
@@ -132,7 +136,7 @@ if __name__ == '__main__':
 # 	myshape.draw_contours_largest()
 # 	sys.exit(0)
 	
-	prefix_name="huangdou-"
+	prefix_name="huasheng-"
 	for i in range(1,11):
 		mypreprocess=my_Preprocess("../data/grains/"+prefix_name+str(i)+".png",[48,48])
 		#cv2.imshow("bin",mypreprocess.get_img_binary())
@@ -140,4 +144,4 @@ if __name__ == '__main__':
 		#myshape.draw_contours()
 		# myshape.draw_contours_largest()
 		print prefix_name,i,":",'-'*20
-		print myshape.get_humoments()[0][0]
+		print myshape.get_humoments()
