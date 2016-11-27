@@ -154,13 +154,18 @@ class my_RILBP(object):
 				self.histogram_result[histogram_x] += 1
 				# print "(%d,%d): rilbp=%d, histogram_x=%d"%(x,y,rilbp,histogram_x)
 	
-		return self.histogram_result
+		# 归一化
+		histogram_y_sum=0
+		for histogram_y in self.histogram_result:
+			histogram_y_sum+=histogram_y
+			
+		return [float(x) / histogram_y_sum for x in self.histogram_result]
 
 	def get_histogram_x_width(self):
 		return self.histogram_x_width
 	
 if __name__ == '__main__':
-	img_file = '../data/sample.png'
+	img_file = '../data/yundou-1.png'
 	img = cv2.imread(img_file, 0)
 	img = cv2.resize(img, (48, 48), interpolation=cv2.INTER_CUBIC)
 	

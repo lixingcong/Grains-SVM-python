@@ -32,7 +32,7 @@ def get_rgb_normolized(input_img, input_img_bin):
 	B, G, R = float(BGR[0]), float(BGR[1]), float(BGR[2])
 
 	# Web 配色预览
-	print "#%02x%02x%02x" % (int(R), int(G), int(B))
+	# print "#%02x%02x%02x" % (int(R), int(G), int(B))
 	
 	sum_BGR_last = B + G + R
 	return (R / sum_BGR_last, G / sum_BGR_last, B / sum_BGR_last,)
