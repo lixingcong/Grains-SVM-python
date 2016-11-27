@@ -12,7 +12,7 @@ from class_preprocess import my_Preprocess
 from class_rilbp import my_RILBP
 from class_shape import my_SHAPE
 from class_crop import my_Crop
-from utils import get_rgb_normolized
+from utils import get_rgb_normolized, normalize_from_list
 import cv2
 
 # CSV: splited by common
@@ -49,7 +49,7 @@ class my_Features(object):
 			print "features is Empty, Now loading from itemlist..."
 			self.calc_features_for_itemlist()
 		
-		return (self.y,self.x,)
+		return (self.y,normalize_from_list(self.x))
 		
 	def load_itemlist(self):
 		my_csv=my_CSV(self.csv_itemlist)
