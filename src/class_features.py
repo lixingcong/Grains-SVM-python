@@ -60,6 +60,10 @@ class my_Features(object):
 				self.dict_category_to_chinese[line[1]]=line[0]
 	
 	def save_features(self):
+		if self.features == []:
+			print "features is Empty, Now loading from itemlist..."
+			self.calc_features_for_itemlist()
+			
 		my_csv=my_CSV(self.csv_features_save)
 		my_csv.write(self.features)
 		
@@ -106,7 +110,7 @@ class my_Features(object):
 				lbp_histogram=self.lbp_calculator.get_lbp_histogram(img_)
 				for histogram_y in lbp_histogram:
 					this_feature.append(histogram_y)
-			
+						
 			self.features.append(this_feature)
 			
 			# counter
