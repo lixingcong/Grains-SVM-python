@@ -13,38 +13,39 @@ import numpy as np
 import sys
 
 if __name__ == '__main__':
-	svm=my_SVM()
-	trained_model_filename="cv2_svm_model.xml"
+	svm = my_SVM()
+	svm_param_C = 512.0
+	svm_param_gamma = 0.5
 	
-	features_train=my_Features('../data/grain_list.csv', '../data/grain_features.csv')
-	features_train.load_features()
-
-# 	features_train.load_itemlist()
-# 	features_train.save_features()
+	trained_model_filename = "cv2_svm_model.xml"
 	
-	train_y,train_x=features_train.get_features_y_x()
-	train_number=len(train_x)
+	features_train = my_Features('../data/grain_list.csv', '../data/grain_features.csv')
+	features_train.load_itemlist()
+	features_train.save_features()
+# 	features_train.load_features()
+	
+	train_y, train_x = features_train.get_features_y_x()
+	train_number = len(train_x)
 	
 	# opencv only support np.array array
 	train_x = np.asarray(train_x, np.float32)
 	train_y = np.asarray(train_y, np.float32)
 	
 	# train all data
-	svm.train(train_x, train_y,C=0.1)
+	svm.train(train_x, train_y, C=svm_param_C, gamma=svm_param_gamma)
 	
 	# load test csv
-	features_test=my_Features('../data/test_list.csv', '../data/test_features.csv')
-# 	features_test.load_itemlist()
-# 	features_test.save_features()
+	features_test = my_Features('../data/test_list.csv', '../data/test_features.csv')
+	features_test.load_itemlist()
+	features_test.save_features()
+# 	features_test.load_features()
 
-	features_test.load_features()
-	test_y,test_x=features_test.get_features_y_x()
-		
-	test_number=len(test_x)
+	test_y, test_x = features_test.get_features_y_x()
+	test_number = len(test_x)
 	
 	# test
 	test_x = np.asarray(test_x, np.float32)
-	predict_values_nparray=svm.predict(test_x)
+	predict_values_nparray = svm.predict(test_x)
 	
 	predict_values = predict_values_nparray.tolist()
 	
@@ -59,7 +60,7 @@ if __name__ == '__main__':
 	print "predict accuracy=%.1f%%" % (100 * float(test_number - predict_error_counter) / test_number)
 	
 	sys.exit(0)
-	choose=raw_input("Would you like to save model? (y/n)")
+	choose = raw_input("Would you like to save model? (y/n)")
 	if choose == 'y':
 		svm.save(trained_model_filename)
 		print "saved"
