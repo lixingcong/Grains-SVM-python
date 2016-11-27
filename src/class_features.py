@@ -84,6 +84,9 @@ class my_Features(object):
 		index=1
 		index_max=len(self.itemlist)
 		for item in self.itemlist:
+			if item[3]=='0':
+				continue
+			
 			filename=item[2]
 			this_feature=[]
 			
