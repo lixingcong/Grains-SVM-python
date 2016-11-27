@@ -50,21 +50,30 @@ class my_Features(object):
 			self.dict_category_to_chinese[line[1]]=line[0]
 	
 	def save_features(self):
-		pass
+		my_csv=my_CSV(self.csv_features_save)
+		my_csv.write(self.features)
 	
 	def calc_features(self):
 		for item in self.itemlist:
 			filename=item[2]
 			this_feature=[]
+			
+			# mark this category
+			this_feature.append(item[1])
+			
+			# open a img and pre-process
 			img=my_Preprocess(filename)
+			
 			# RGB fetures
 			R,G,B=get_rgb_normolized(img.get_img(), img.get_img_binary())
 			this_feature.append(R)
 			this_feature.append(G)
+			
 			# Hu(1)
 			myshape=my_SHAPE(img.get_img_gray(), img.get_img_binary())
 			Hu_1=myshape.get_humoments()
 			this_feature.append(Hu_1)
+			
 			# LBP			
 			img_splited=self.mycrop.get_cropped_images(img.get_img_gray())
 			for img_ in img_splited:
@@ -72,9 +81,7 @@ class my_Features(object):
 				for histogram_y in lbp_histogram:
 					this_feature.append(histogram_y)
 			
-			print this_feature
-			break
-
+			self.features.append(this_feature)
 			
 	def _show_img(self,img):
 		cv2.namedWindow('img', cv2.WINDOW_NORMAL)
@@ -87,4 +94,5 @@ if __name__ == '__main__':
 	my_features=my_Features('../data/grain_list.csv', '../data/grain_features.csv')
 	my_features.load_itemlist()
 	my_features.calc_features()
+	my_features.save_features()
 	
