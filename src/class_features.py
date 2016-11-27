@@ -12,7 +12,7 @@ from class_preprocess import my_Preprocess
 from class_rilbp import my_RILBP
 from class_shape import my_SHAPE
 from class_crop import my_Crop
-from color_prop import get_rgb_normolized
+from utils import get_rgb_normolized
 import cv2
 
 # CSV: splited by common
