@@ -17,12 +17,12 @@ import cv2
 
 # CSV: splited by common
 #
-# saved csv file columns
-# ------------------------------------------------
-# | category | color:R | color:G | Hu(1) | riLBP |
-# ------------------------------------------------
+# saved features csv file columns
+# ----------------------------------------------------------
+# | Chinese | category | color:R | color:G | Hu(1) | riLBP |
+# ----------------------------------------------------------
 # 
-# itemlist csv file columns, when category is 0, it means unknown
+# itemlist csv file columns, when category or Chinese are both 0, it means unknown item
 # -------------------------------------------
 # | Chinese | category | filename | is_good |
 # -------------------------------------------
@@ -41,24 +41,42 @@ class my_Features(object):
 		self.mycrop=my_Crop(blocks_split=[3,3])
 		
 	def get_chinese_from_category(self,c):
+		c=str(int(c))
 		return self.dict_category_to_chinese[c]
+	
+	def get_features(self):
+		if self.features == []:
+			print "features is Empty, Now training..."
+			self.calc_features_for_itemlist()
+		return self.features
 		
 	def load_itemlist(self):
 		my_csv=my_CSV(self.csv_itemlist)
 		for line in my_csv.read(1,my_csv.get_total_rows()):
 			self.itemlist.append(line)
-			self.dict_category_to_chinese[line[1]]=line[0]
+			# grain category is known
+			if line[1] != '0':
+				self.dict_category_to_chinese[line[1]]=line[0]
 	
 	def save_features(self):
 		my_csv=my_CSV(self.csv_features_save)
 		my_csv.write(self.features)
+		
+	def load_features(self):
+		my_csv=my_CSV(self.csv_features_save)
+		for line in my_csv.read(1,my_csv.get_total_rows()):
+			self.features.append(line)
+			self.dict_category_to_chinese[line[1]]=line[0]
 	
-	def calc_features(self):
+	def calc_features_for_itemlist(self):
+		index=1
+		index_max=len(self.itemlist)
 		for item in self.itemlist:
 			filename=item[2]
 			this_feature=[]
 			
 			# mark this category
+			this_feature.append(item[0])
 			this_feature.append(item[1])
 			
 			# open a img and pre-process
@@ -83,16 +101,17 @@ class my_Features(object):
 			
 			self.features.append(this_feature)
 			
-	def _show_img(self,img):
-		cv2.namedWindow('img', cv2.WINDOW_NORMAL)
-		cv2.resizeWindow('img', 300, 300)
-		cv2.imshow('img',img)
-		if cv2.waitKey(0) == 27:
-			cv2.destroyAllWindows()
+			# counter
+			print "%d/%d"%(index,index_max)
+			index+=1
+			
 		
 if __name__ == '__main__':
 	my_features=my_Features('../data/grain_list.csv', '../data/grain_features.csv')
-	my_features.load_itemlist()
-	my_features.calc_features()
-	my_features.save_features()
+	#my_features.load_itemlist()
+	my_features.load_features()
+	#my_features.calc_features_for_itemlist()
+	#my_features.save_features()
+	print my_features.get_features()
+	print my_features.get_chinese_from_category(1)
 	
