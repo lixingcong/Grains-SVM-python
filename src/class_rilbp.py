@@ -65,8 +65,9 @@ class my_RILBP(object):
 	# 获取图片中任意一点(index_x, index_y)，无效值返回0
 	# 注意：opencv中img[y,x]对应于图像处理规范坐标的img[x,y]
 	def _get_pixel_else_0(self, idx, idy):
-		if idx < self.img_width and idy < self.img_height:
-			return self.img[idy, idx]
+		x, y = int(idx), int(idy)
+		if x < self.img_width and y < self.img_height:
+			return self.img[y, x]
 		else:
 			return 0
 		
