@@ -17,7 +17,7 @@ class my_Preprocess(object):
 		self.img_gray = None
 		self.img_bin = None
 		
-		if resize[0]!=0 or resize[1]!=0:
+		if resize[0] != 0 or resize[1] != 0:
 			self._resize(w=resize[0], h=resize[1])
 			
 		self._filter()
@@ -30,8 +30,8 @@ class my_Preprocess(object):
 		self.img_gray = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
 		
 	def _gray2binary(self, thresh=127, maxval=255):
-		ret,img_thresh = cv2.threshold(self.img_gray, thresh, maxval, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-		print "pre-process: gray2binary, OTUS thresh=",ret
+		ret, img_thresh = cv2.threshold(self.img_gray, thresh, maxval, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+		print "pre-process: gray2binary, OTUS thresh=", ret
 		self.img_bin = 255 - img_thresh
 		
 	def _resize(self, w, h):
@@ -52,16 +52,16 @@ class my_Preprocess(object):
 	
 	def _morphology(self, radius=3):
 		# 形态学滤波:对大米不好处理，薏米有两个沟
-		kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(radius,radius))
+		kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (radius, radius))
 		self.img_bin = cv2.morphologyEx(self.img_bin, cv2.MORPH_CLOSE, kernel)
 	
 	# 描黑边，防止寻找边缘时候溢出	
 	def _patch_img_bin_edge(self):
-		height,width=self.img_bin.shape
-		self.img_bin[0,:]=0
-		self.img_bin[height-1,:]=0
-		self.img_bin[:,0]=0
-		self.img_bin[:,width-1]=0
+		height, width = self.img_bin.shape
+		self.img_bin[0, :] = 0
+		self.img_bin[height - 1, :] = 0
+		self.img_bin[:, 0] = 0
+		self.img_bin[:, width - 1] = 0
 		
 	def get_img(self):
 		return self.img
