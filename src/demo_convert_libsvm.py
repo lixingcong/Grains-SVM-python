@@ -11,7 +11,7 @@ from class_features import my_Features
 
 features=my_Features(None,'../data/grain_features.csv')
 
-features.load_features()
+features.load_saved_features()
 
 y,x=features.get_features_y_x()
 

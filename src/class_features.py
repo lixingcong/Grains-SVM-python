@@ -45,11 +45,11 @@ class my_Features(object):
 		return self.dict_category_to_chinese[c]
 	
 	def get_features_y_x(self):
-		if self.features == []:
+		if self.y == []:
 			print "features is Empty, Now loading from itemlist..."
 			self.calc_features_for_itemlist()
 		
-		return (self.y,normalize_from_list(self.x))
+		return (self.y, self.x)
 		
 	def load_itemlist(self):
 		my_csv=my_CSV(self.csv_itemlist)
@@ -65,9 +65,19 @@ class my_Features(object):
 			self.calc_features_for_itemlist()
 			
 		my_csv=my_CSV(self.csv_features_save)
-		my_csv.write(self.features)
 		
-	def load_features(self):
+		data=[]
+		for i in range(len(self.y)):
+			this_line=[]
+			this_line.append(self.get_chinese_from_category(self.y[i]))
+			this_line.append(self.y[i])
+			for j in self.x[i]:
+				this_line.append(j)
+			data.append(this_line)
+		
+		my_csv.write(data)
+		
+	def load_saved_features(self):
 		my_csv=my_CSV(self.csv_features_save)
 		for line in my_csv.read(1,my_csv.get_total_rows()):
 			self.features.append(line)
@@ -123,11 +133,15 @@ class my_Features(object):
 			index+=1
 		
 		self._load_y_x_from_features()
+		self._normalize_x()
+
+	def _normalize_x(self):
+		self.x = normalize_from_list(self.x)
 		
 if __name__ == '__main__':
 	my_features=my_Features('../data/grain_list.csv', '../data/grain_features.csv')
 	#my_features.load_itemlist()
-	my_features.load_features()
+	my_features.load_saved_features()
 	#my_features.calc_features_for_itemlist()
 	#my_features.save_features()
 	print my_features.get_features_y_x()[0]
