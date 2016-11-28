@@ -133,21 +133,25 @@ class my_SHAPE(object):
 		cnt, moments = self._get_contours_largest()
 		(x, y), radius = cv2.minEnclosingCircle(cnt)
 		x_center, y_center = x, y
+		square=int(2*radius)
 		x1, y1 = int(x_center - radius), int(y_center - radius)
-		x2, y2 = int(x_center + radius), int(y_center + radius)
+		x2, y2 = x1+square,y1+square
 		
 		# 剪裁前景
-		foreground = self.img[y1:y2 + 1, x1:x2 + 1]
-		
+		foreground = self.img[y1:y2, x1:x2]
+
 		return foreground
 		
 if __name__ == '__main__':
-# 	mypreprocess=my_Preprocess("../data/grains/candou/3.jpg",[48,48])
+# 	mypreprocess=my_Preprocess("../data/grains/heimi/1.jpg")
 # 	cv2.namedWindow('bin',cv2.WINDOW_NORMAL)
 # 	cv2.resizeWindow('bin', 300,300)
-# 	cv2.imshow("bin",mypreprocess.get_img())
 # 	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
-# 	myshape.get_foreground()
+# 	img=myshape.get_foreground()
+# 	cv2.imshow('i',mypreprocess.get_img_gray())
+# 	cv2.imshow('bin',img)
+# 	if cv2.waitKey(0) == 27:
+# 		cv2.destroyAllWindows()
 # 	sys.exit(0)
 	
 	prefix_name = "huangdou"

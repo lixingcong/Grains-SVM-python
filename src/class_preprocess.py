@@ -12,7 +12,7 @@ import numpy as np
 import sys
 
 class my_Preprocess(object):
-	def __init__(self, img_filename, resize=[48, 48]):
+	def __init__(self, img_filename, resize=[72, 72]):
 		self.img = cv2.imread(img_filename)
 		self.img_gray = None
 		self.img_bin = None

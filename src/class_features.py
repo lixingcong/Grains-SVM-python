@@ -107,8 +107,10 @@ class my_Features(object):
 			Hu_1=myshape.get_humoments()
 			this_feature.append(Hu_1)
 			
-			# LBP			
-			img_splited=self.mycrop.get_cropped_images(img.get_img_gray())
+			# LBP
+			img_foreground=myshape.get_foreground()
+			img_resized=cv2.resize(img_foreground, (48, 48), interpolation=cv2.INTER_CUBIC)
+			img_splited=self.mycrop.get_cropped_images(img_resized)			
 			for img_ in img_splited:
 				lbp_histogram=self.lbp_calculator.get_lbp_histogram(img_)
 				for histogram_y in lbp_histogram:
