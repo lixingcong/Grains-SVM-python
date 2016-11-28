@@ -14,8 +14,7 @@ import sys
 
 if __name__ == '__main__':
 	svm = my_SVM()
-	svm_param_C = 64.0
-	svm_param_gamma = 0.0473661427034
+	svm_param_C, svm_param_gamma = 2.82842712475,0.25
 	
 	trained_model_filename = "cv2_svm_model.xml"
 	
