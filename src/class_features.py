@@ -31,11 +31,11 @@ class my_Features(object):
 	def __init__(self,csv_itemlist,csv_features_save):
 		self.csv_itemlist=csv_itemlist
 		self.csv_features_save=csv_features_save
-		self.itemlist=[]
-		self.dict_category_to_chinese={}
-		self.features=[]
-		self.x=[]
-		self.y=[]
+		self.itemlist=[] # 存放itemlist.csv里面的内容
+		self.dict_category_to_chinese={} # 字典：从类别映射到中文，例如'1'-->'黄豆'
+		self.features=[] # 存放所有特征，用于写入features_saved.csv
+		self.x=[] # 特征向量
+		self.y=[] # 类别
 		
 		self.lbp_calculator=my_RILBP()
 		self.mycrop=my_Crop(blocks_split=[3,3])
@@ -50,7 +50,8 @@ class my_Features(object):
 			self.calc_features_for_itemlist()
 		
 		return (self.y, self.x)
-		
+	
+	# 从itemlist.csv中加载【待计算特征的文件】列表
 	def load_itemlist(self):
 		my_csv=my_CSV(self.csv_itemlist)
 		for line in my_csv.read(1,my_csv.get_total_rows()):
@@ -59,6 +60,7 @@ class my_Features(object):
 			if line[1] != '0':
 				self.dict_category_to_chinese[line[1]]=line[0]
 	
+	# 保存self.features中的内容到csv文件
 	def save_features(self):
 		if self.features == []:
 			print "features is Empty, Now loading from itemlist..."
@@ -76,7 +78,8 @@ class my_Features(object):
 			data.append(this_line)
 		
 		my_csv.write(data)
-		
+	
+	# 从saved_features.csv中加载所有特征
 	def load_saved_features(self):
 		my_csv=my_CSV(self.csv_features_save)
 		for line in my_csv.read(1,my_csv.get_total_rows()):
@@ -84,12 +87,14 @@ class my_Features(object):
 			self.dict_category_to_chinese[line[1]]=line[0]
 		
 		self._load_y_x_from_features()
-			
+	
+	# 从self.features加载对应特征向量和y
 	def _load_y_x_from_features(self):
 		for line in self.features:
 			self.x.append(line[2:])
 			self.y.append(int(line[1]))	
 	
+	# 计算特征
 	def calc_features_for_itemlist(self):
 		index=1
 		index_max=len(self.itemlist)
@@ -135,6 +140,7 @@ class my_Features(object):
 		self._load_y_x_from_features()
 		self._normalize_x()
 
+	# 特征x的标准化，默认到[-1,+1]
 	def _normalize_x(self):
 		self.x = normalize_from_list(self.x)
 		
