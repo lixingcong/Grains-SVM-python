@@ -19,7 +19,7 @@ if __name__ == '__main__':
 	
 	trained_model_filename = "cv2_svm_model.xml"
 	
-	features_train = my_Features('../data/grain_list.csv', '../data/grain_features.csv')
+	features_train = my_Features('../data/grain_psd_list.csv', '../data/grain_features.csv')
 	features_train.load_itemlist()
 	features_train.save_features()
 # 	features_train.load_features()

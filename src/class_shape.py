@@ -126,22 +126,37 @@ class my_SHAPE(object):
 		if Hu_1 <= 0.0:return 0.0
 		if Hu_1 >= 1.0:return 1.0
 		return Hu_1
+	
+	# 返回一个剪裁后的图像，内容为正方形的前景，仅用于计算riLBP值（消除背景影响）
+	def get_foreground(self):
+		self._find_contours(self.canny_thresh)
+		cnt, moments = self._get_contours_largest()
+		(x, y), radius = cv2.minEnclosingCircle(cnt)
+		x_center, y_center = x, y
+		x1, y1 = int(x_center - radius), int(y_center - radius)
+		x2, y2 = int(x_center + radius), int(y_center + radius)
+		
+		# 剪裁前景
+		foreground = self.img[y1:y2 + 1, x1:x2 + 1]
+		
+		return foreground
 		
 if __name__ == '__main__':
-# 	mypreprocess=my_Preprocess("../data/grains/lvdou-3.png",[48,48])
+# 	mypreprocess=my_Preprocess("../data/grains/candou/3.jpg",[48,48])
 # 	cv2.namedWindow('bin',cv2.WINDOW_NORMAL)
 # 	cv2.resizeWindow('bin', 300,300)
 # 	cv2.imshow("bin",mypreprocess.get_img())
 # 	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
-# 	myshape.draw_contours_largest()
+# 	myshape.get_foreground()
 # 	sys.exit(0)
 	
-	prefix_name = "huasheng-"
+	prefix_name = "huangdou"
 	for i in range(1, 11):
-		mypreprocess = my_Preprocess("../data/grains/" + prefix_name + str(i) + ".png", [48, 48])
+		mypreprocess = my_Preprocess("../data/grains/" + prefix_name +'/'+ str(i) + ".jpg", [48, 48])
 		# cv2.imshow("bin",mypreprocess.get_img_binary())
 		myshape = my_SHAPE(mypreprocess.get_img_gray(), mypreprocess.get_img_binary())	
 		# myshape.draw_contours()
 		# myshape.draw_contours_largest()
-		print prefix_name, i, ":", '-' * 20
-		print myshape.get_humoments()
+		#print prefix_name, i, ":", '-' * 20
+		#print myshape.get_humoments()
+		print myshape.get_foreground()
