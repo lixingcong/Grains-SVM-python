@@ -1,0 +1,72 @@
+/*
+ * Date: 2016年11月29日
+ * Author: li
+ */
+package grains_lxc.features;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import grains_lxc.csv.My_CSV;
+
+/*
+ * CSV: splited by common
+ * 
+ * saved features csv file columns
+ * ----------------------------------------------------------
+ * | Chinese | category | color:R | color:G | Hu(1) | riLBP |
+ * ----------------------------------------------------------
+ * 
+ * itemlist csv file columns, when category or Chinese are both 0, it means unknown item
+ * -------------------------------------------
+ * | Chinese | category | filename | is_good |
+ * -------------------------------------------
+ */
+
+public class My_Features {
+
+	String csv_features_save;
+	String csv_split_char=",";
+
+	List<List<Float>> x = new ArrayList<List<Float>>();
+	List<Float> y = new ArrayList<Float>();
+	Map<String, String> dict_category_to_chinese = new HashMap<String, String>();
+	List<String> features=null;
+	
+	public My_Features(String csv_features_save){
+		this.csv_features_save=csv_features_save;
+	}
+	
+	public void load_saved_features(){
+		My_CSV my_csv= new My_CSV(csv_features_save);
+		features = my_csv.read();
+		for(String line:features){
+			String[] line_splited=line.split(csv_split_char);
+			dict_category_to_chinese.put(line_splited[1], line_splited[0]);
+		}
+		load_y_x_from_features();
+	}
+	
+	private void load_y_x_from_features(){
+		for(String line:features){
+			List<String> line_splited=Arrays.asList(line.split(csv_split_char));
+			List<String> line_splited_x=line_splited.subList(2,line_splited.size());
+			
+			List<Float> this_x=new ArrayList<Float>();
+			for(String _x:line_splited_x){
+				this_x.add(new Float(_x));
+			}
+			
+			x.add(this_x);
+			y.add(new Float(line_splited.get(1)));
+		}
+		System.out.println(x);
+	}
+	
+	public static void main(String[] args) {
+		My_Features f=new My_Features("/tmp/1.csv");
+		f.load_saved_features();
+	}
+}
