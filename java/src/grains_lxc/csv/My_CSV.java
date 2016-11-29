@@ -15,7 +15,6 @@ public class My_CSV {
 
 	String csv_file;
 	String line = "";
-	String cvsSplitBy = ",";
 	BufferedReader br = null;
 	List<String> content_read=null;
         
@@ -44,5 +43,19 @@ public class My_CSV {
 	
 	public int get_total_rows(){
 		return content_read.size();
+	}
+	
+	// 仅供测试
+	public static void main(String[] args) {
+		My_CSV csv=new My_CSV("/tmp/1.csv");
+
+		List<String> content_read=null;
+		content_read=csv.read();
+		
+		for(String line:content_read){
+			System.out.println(line);
+		}
+		
+		System.out.println(csv.get_total_rows());
 	}
 }
