@@ -1,0 +1,10 @@
+/bin/
+
+*.class
+*.jar
+*.tmp
+
+.classpath
+.project
+*.swp
+
