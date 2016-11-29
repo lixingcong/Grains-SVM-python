@@ -21,7 +21,7 @@ public class Demo {
 		
 //		System.out.print(res_x);
 		my_svm.train(res_x, res_y);
-		//my_svm.predict(res_x);
+		System.out.print(my_svm.predict(res_x));
 	}
 
 }

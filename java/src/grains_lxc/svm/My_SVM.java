@@ -6,6 +6,7 @@ package grains_lxc.svm;
 import grains_lxc.stat_model.StatModel;
 import grains_lxc.features.My_Features;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.core.Core;
@@ -52,6 +53,29 @@ public class My_SVM extends StatModel{
 		
 		model_svm.train(mat_train_x, mat_train_y, new Mat(), new Mat(), my_svm_params);
 	}
+	
+	public List<Float>  predict(List<List<Float>> test_x){
+		int item_features_qty=test_x.get(0).size();
+		int item_qty=test_x.size();
+		
+		Mat mat_test_x=new Mat(item_qty,item_features_qty,CvType.CV_32FC1);
+		Mat mat_test_y=new Mat(item_qty,1,CvType.CV_32FC1);
+		
+		// 填充数据到Mat类型中
+		for(int i=0;i<item_qty;i++){
+			for(int j=0;j<item_features_qty;j++)
+				mat_test_x.put(i,j,test_x.get(i).get(j).floatValue());
+		}
+		
+		model_svm.predict_all(mat_test_x, mat_test_y);
+				
+		List<Float> result=new ArrayList<Float>();
+		for(int i=0;i<mat_test_y.rows();i++){
+			result.add((float)mat_test_y.get(i, 0)[0]);
+		}
+		
+		return result;
+	}	
 		
 	@Override
 	public void load(String filename) {
