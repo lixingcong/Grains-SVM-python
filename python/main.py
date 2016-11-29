@@ -19,9 +19,9 @@ if __name__ == '__main__':
 	trained_model_filename = "cv2_svm_model.xml"
 	
 	features_train = my_Features('../data/grain_psd_list.csv', '../data/grain_features.csv')
-	features_train.load_itemlist()
-	features_train.save_features()
-# 	features_train.load_saved_features()
+# 	features_train.load_itemlist()
+# 	features_train.save_features()
+	features_train.load_saved_features()
 	
 	train_y, train_x = features_train.get_features_y_x()
 	train_number = len(train_x)
@@ -35,9 +35,9 @@ if __name__ == '__main__':
 	
 	# load test csv
 	features_test = my_Features('../data/test_list.csv', '../data/test_features.csv')
-	features_test.load_itemlist()
-	features_test.save_features()
-# 	features_test.load_saved_features()
+# 	features_test.load_itemlist()
+# 	features_test.save_features()
+	features_test.load_saved_features()
 
 	test_y, test_x = features_test.get_features_y_x()
 	test_number = len(test_x)
