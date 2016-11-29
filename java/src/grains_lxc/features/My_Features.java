@@ -62,11 +62,33 @@ public class My_Features {
 			x.add(this_x);
 			y.add(new Float(line_splited.get(1)));
 		}
-		System.out.println(x);
+	}
+	
+	public String get_chinese_from_category(int c){		
+		return dict_category_to_chinese.get(Integer.toString(c));
+	}
+	
+	public List<Float> get_features_y(){
+		return y;
+	}
+	
+	public List<List<Float>> get_features_x(){
+		return x;
 	}
 	
 	public static void main(String[] args) {
 		My_Features f=new My_Features("/tmp/1.csv");
 		f.load_saved_features();
+		// System.out.println(f.get_chinese_from_category(1));
+		
+		List<List<Float>> res_x=f.get_features_x();
+		List<Float> res_y=f.get_features_y();
+		
+		for(int i=0;i<res_y.size();i++){
+			System.out.print(res_y.get(i));
+			System.out.print(": ");
+			System.out.println(res_x.get(i));
+		}
+		
 	}
 }
