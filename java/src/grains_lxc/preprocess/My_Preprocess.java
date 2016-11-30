@@ -16,9 +16,9 @@ public class My_Preprocess {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 
-	Mat img = null;
-	Mat img_gray = null;
-	Mat img_bin = null;
+	private Mat img = null;
+	private Mat img_gray = null;
+	private Mat img_bin = null;
 
 	public My_Preprocess(String img_filename) {
 		this(img_filename, 72.0, 72.0);
@@ -27,7 +27,6 @@ public class My_Preprocess {
 	public My_Preprocess(String img_filename, double resize_width, double resize_height) {
 		Mat mat = Highgui.imread(img_filename);
 		this.img = new Mat();
-		this.img_gray = new Mat();
 
 		Size s = new Size(resize_width, resize_height);
 		Imgproc.resize(mat, this.img, s);
@@ -40,6 +39,7 @@ public class My_Preprocess {
 	}
 
 	private void rgb2gray() {
+		img_gray = new Mat();
 		Imgproc.cvtColor(this.img, this.img_gray, Imgproc.COLOR_RGB2GRAY);
 	}
 
