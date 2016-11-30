@@ -4,6 +4,9 @@
  */
 package grains_lxc.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -22,8 +25,19 @@ public class Demo {
 		
 		double[] rgb=(ut.get_rgb_normolized(mat1, mat2));
 		
-		for(double i:rgb)
-			System.out.print(i);
+		List<List<Double>> rgb_list=new ArrayList<List<Double>>();
+		List<Double> rgb_a_line=new ArrayList<Double>();
+		for(double i:rgb){
+			System.out.print(i+"\n");
+			rgb_a_line.add(i);
+		}
+		rgb_list.add(rgb_a_line);
 		
+		List<List<Double>> normalized=ut.normalize_from_list(rgb_list);
+		for(List<Double> i:normalized){
+			for(Double j:i){
+				System.out.println(j);
+			}
+		}
 	}
 }

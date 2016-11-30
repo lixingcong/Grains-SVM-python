@@ -4,6 +4,11 @@
  */
 package grains_lxc.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
 public class My_Utils {
@@ -47,4 +52,29 @@ public class My_Utils {
 
 		return (new double[] { R / RGB, G / RGB, B / RGB });
 	}
+
+	public List<List<Double>> normalize_from_list(List<List<Double>> input_list) {
+		List<List<Double>> results = new ArrayList<List<Double>>();
+		int item_features_qty = input_list.get(0).size();
+
+		for (List<Double> line : input_list) {
+			List<Double> result_this_line = new ArrayList<Double>();
+			Mat mat1 = new Mat(1, item_features_qty, CvType.CV_64FC1);
+			Mat mat2 = new Mat(1, item_features_qty, CvType.CV_64FC1);
+
+			for (int i = 0; i < item_features_qty; i++) {
+				mat1.put(0, i, line.get(i));
+			}
+
+			Core.normalize(mat1, mat2, -1.0, 1.0, Core.NORM_MINMAX);
+
+			for (int i = 0; i < item_features_qty; i++) {
+				result_this_line.add(mat2.get(0, i)[0]);
+			}
+
+			results.add(result_this_line);
+		}
+		return results;
+	}
+
 }
