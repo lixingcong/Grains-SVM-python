@@ -47,6 +47,7 @@ public class Imshow {
 	}
 
 	public Imshow(String title, int height, int width) {
+		// 注意height对应真正窗口的水平方向的长度。。。（奇葩）
 		SizeCustom = true;
 		Height = height;
 		Width = width;
