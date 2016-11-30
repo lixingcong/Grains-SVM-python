@@ -118,7 +118,7 @@ class my_Features(object):
 			this_feature.append(G)
 			
 			# Hu(1)
-			myshape=my_SHAPE(img.get_img_gray(), img.get_img_binary())
+			myshape=my_SHAPE(img.get_img_gray())
 			Hu_1=myshape.get_humoments()
 			this_feature.append(Hu_1)
 			

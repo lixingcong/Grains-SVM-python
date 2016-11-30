@@ -16,27 +16,20 @@ import numpy as np
 import sys
 
 class my_SHAPE(object):
-	def __init__(self, img_gray, img_bin, canny_thresh=20):
+	def __init__(self, img_gray, canny_thresh=20):
 		self.img = img_gray
-		self.img_bin = img_bin
 		self.contours = None
 		self.contours_largest = None
 		self.hierarchy = None
 		self.canny_thresh = canny_thresh
 		self.thresh_max = 255
 		
-		# 形态学滤波，预处理，将canny边缘缺口补上
-		self._morphology(radius=5)
-		
+		# TODO: 形态学滤波，预处理，将canny边缘缺口补上？
+
 	# 找出轮廓
 	def _find_contours(self, thresh):
 		edges = cv2.Canny(self.img, thresh, thresh * 2)
 		self.contours, self.hierarchy = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-		
-	def _morphology(self, radius):
-		# kernel = np.ones((radius, radius), np.uint8)
-		kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (radius, radius))
-		self.img_bin = cv2.morphologyEx(self.img_bin, cv2.MORPH_OPEN, kernel)
 	
 	# 创建input output窗体
 	def _create_2_windows(self, width):
@@ -158,9 +151,9 @@ if __name__ == '__main__':
 	for i in range(1, 11):
 		mypreprocess = my_Preprocess("../data/grains/" + prefix_name +'/'+ str(i) + ".jpg", [48, 48])
 		# cv2.imshow("bin",mypreprocess.get_img_binary())
-		myshape = my_SHAPE(mypreprocess.get_img_gray(), mypreprocess.get_img_binary())	
+		myshape = my_SHAPE(mypreprocess.get_img_gray())	
 		# myshape.draw_contours()
-		# myshape.draw_contours_largest()
+		#myshape.draw_contours_largest()
 		#print prefix_name, i, ":", '-' * 20
-		#print myshape.get_humoments()
-		print myshape.get_foreground()
+		print myshape.get_humoments()
+		#print myshape.get_foreground()
