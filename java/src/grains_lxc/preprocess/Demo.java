@@ -16,10 +16,10 @@ public class Demo {
 	}
 	
 	public static void main(String[] args) {
-		My_Preprocess preprocess=new My_Preprocess("../data/yundou-1.png");
+		My_Preprocess preprocess=new My_Preprocess("../data/yimi-4.png");
 		
 		Mat mat1=preprocess.get_img();
-		Mat mat2=preprocess.get_img_gray();
+		Mat mat2=preprocess.get_img_binary();
 		
 		Imshow ims1 = new Imshow("input");
 		ims1.showImage(mat1);
