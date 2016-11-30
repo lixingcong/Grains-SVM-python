@@ -30,8 +30,8 @@ public class My_Features {
 	String csv_features_save;
 	String csv_split_char=",";
 
-	List<List<Float>> x = new ArrayList<List<Float>>();
-	List<Float> y = new ArrayList<Float>();
+	List<List<Double>> x = new ArrayList<List<Double>>();
+	List<Double> y = new ArrayList<Double>();
 	Map<String, String> dict_category_to_chinese = new HashMap<String, String>();
 	List<String> features=null;
 	
@@ -54,13 +54,13 @@ public class My_Features {
 			List<String> line_splited=Arrays.asList(line.split(csv_split_char));
 			List<String> line_splited_x=line_splited.subList(2,line_splited.size());
 			
-			List<Float> this_x=new ArrayList<Float>();
+			List<Double> this_x=new ArrayList<Double>();
 			for(String _x:line_splited_x){
-				this_x.add(new Float(_x));
+				this_x.add(new Double(_x));
 			}
 			
 			x.add(this_x);
-			y.add(new Float(line_splited.get(1)));
+			y.add(new Double(line_splited.get(1)));
 		}
 	}
 	
@@ -68,21 +68,21 @@ public class My_Features {
 		return dict_category_to_chinese.get(Integer.toString(c));
 	}
 	
-	public List<Float> get_features_y(){
+	public List<Double> get_features_y(){
 		return y;
 	}
 	
-	public List<List<Float>> get_features_x(){
+	public List<List<Double>> get_features_x(){
 		return x;
 	}
 	
 	public static void main(String[] args) {
-		My_Features f=new My_Features("/tmp/1.csv");
+		My_Features f=new My_Features("../data/test_features.csv");
 		f.load_saved_features();
 		// System.out.println(f.get_chinese_from_category(1));
 		
-		List<List<Float>> res_x=f.get_features_x();
-		List<Float> res_y=f.get_features_y();
+		List<List<Double>> res_x=f.get_features_x();
+		List<Double> res_y=f.get_features_y();
 		
 		for(int i=0;i<res_y.size();i++){
 			System.out.print(res_y.get(i));
