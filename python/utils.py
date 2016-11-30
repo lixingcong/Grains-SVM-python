@@ -42,8 +42,8 @@ def normalize_from_list(input_list):
 	len_of_line = len(input_list[0])
 	res = []
 	for row in input_list:
-		a1 = np.asarray(row, dtype=np.float32)
-		a2 = np.zeros((len_of_line,), dtype=np.float32)
+		a1 = np.asarray(row, dtype=np.float64)
+		a2 = np.zeros((len_of_line,), dtype=np.float64)
 		# 标准化到[-1,+1]
 		cv2.normalize(a1, a2, -1.0, 1.0, cv2.NORM_MINMAX)
 		res.append(a2.tolist())
