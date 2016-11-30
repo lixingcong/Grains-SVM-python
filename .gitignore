@@ -1,5 +1,6 @@
 # data folder
 data/
+data_/
 
 *.pyc
 *.swp
