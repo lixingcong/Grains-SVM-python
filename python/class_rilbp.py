@@ -149,10 +149,11 @@ class my_RILBP(object):
 	
 				values = self._thresholded(center, pixels)
 	
-				rilbp = self._get_rilbp_from_bin(values)
-				histogram_x = self.dict_rilbp_to_histogram_x[rilbp]
+				rilbp_sum = self._get_sum_from_bin(values)
+				rilbp_min=self.dict_sum_to_rilbp[rilbp_sum]
+				histogram_x = self.dict_rilbp_to_histogram_x[rilbp_min]
 				self.histogram_result[histogram_x] += 1
-				# print "(%d,%d): rilbp=%d, histogram_x=%d"%(x,y,rilbp,histogram_x)
+				# print "(%d,%d): rilbp=%d, histogram_x=%d"%(x,y,rilbp_min,histogram_x)
 	
 		# 归一化
 		histogram_y_sum=0
