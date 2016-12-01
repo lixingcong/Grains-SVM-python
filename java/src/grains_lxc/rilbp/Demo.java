@@ -19,12 +19,6 @@ public class Demo {
 	
 	public static void main(String[] args) {
 		My_RILBP my_rilbp=new My_RILBP();
-		
-		Map<Integer, Integer> dict_sum_to_rilbp=(Map<Integer, Integer>)my_rilbp.get_d();
-		
-		for(int i=0;i<256;i++){
-			System.out.print(i+": ");
-			System.out.println(dict_sum_to_rilbp.get(new Integer(i)));
-		}
+		My_RILBP my_rilbp1=new My_RILBP();
 	}
 }

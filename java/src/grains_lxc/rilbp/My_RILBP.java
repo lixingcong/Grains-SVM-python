@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.opencv.core.Core;
 
@@ -34,7 +35,12 @@ public class My_RILBP {
 	public My_RILBP(double radius,int neighbors) {
 		My_RILBP.lbp_radius=radius;
 		My_RILBP.lbp_neighbors=neighbors;
-		My_RILBP.gen_dict_sum_to_rilbp();
+		
+		if(My_RILBP.dict_sum_to_rilbp == null){
+			//System.out.println("generating...");
+			My_RILBP.gen_dict_sum_to_rilbp();
+			My_RILBP.gen_dict_rilbp_to_histogram_x();	
+		}
 	}
 	
 	static private void gen_dict_sum_to_rilbp(){
@@ -77,6 +83,23 @@ public class My_RILBP {
 		}
 		
 		return min_lbp;
+	}
+	
+	static private void gen_dict_rilbp_to_histogram_x(){
+		TreeSet<Integer> set_rilbp=new TreeSet<Integer>();
+		dict_rilbp_to_histogram_x=new HashMap<Integer, Integer>();
+		
+		for(Map.Entry<Integer, Integer> entry:dict_sum_to_rilbp.entrySet()){
+			set_rilbp.add(entry.getValue());
+		}
+		
+		Integer index=new Integer(0);
+		for(Integer i:set_rilbp){
+			dict_rilbp_to_histogram_x.put(i, index);
+			index+=1;
+		}
+		
+		histogram_x_width=index;
 	}
 	
 	static public Object get_d(){
