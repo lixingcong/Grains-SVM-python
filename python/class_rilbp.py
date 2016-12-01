@@ -9,6 +9,8 @@ Rotation invariant Local Binary Pattern（旋转不变的局部二值化模式�
 import cv2
 from matplotlib import pyplot as plt
 import math
+import sys
+from class_preprocess import my_Preprocess
 
 class my_RILBP(object):
 	def __init__(self, radius=1, neighbors=8):
@@ -134,8 +136,9 @@ class my_RILBP(object):
 							# 插值
 							pixels.append((w1 * self._get_pixel_else_0(int(r), int(c)) + \
 										   w2 * self._get_pixel_else_0(int(r), math.ceil(c))) / (w1 + w2))
+							
 						else:
-							# 双线性插值
+							# 像素点刚好是整数像素
 							pixels.append(self._get_pixel_else_0(int(r), int(c)))
 					elif int(c) == c:
 						r1 = int(r)
@@ -144,6 +147,7 @@ class my_RILBP(object):
 						w2 = (r - r1) / (r2 - r1)
 						pixels.append((w1 * self._get_pixel_else_0(int(r), int(c)) + \
 									   w2 * self._get_pixel_else_0(math.ceil(r), int(c))) / (w1 + w2))
+						
 					else:
 						pixels.append(self._bilinear_interpolation(r, c))
 	
@@ -158,6 +162,7 @@ class my_RILBP(object):
 		# 归一化
 		histogram_y_sum=0
 		for histogram_y in self.histogram_result:
+# 			print histogram_y
 			histogram_y_sum+=histogram_y
 			
 		return [float(x) / histogram_y_sum for x in self.histogram_result]
@@ -166,14 +171,11 @@ class my_RILBP(object):
 		return self.histogram_x_width
 	
 if __name__ == '__main__':
-	img_file = '../data/yundou-1.png'
-	img = cv2.imread(img_file, 0)
-	img = cv2.resize(img, (48, 48), interpolation=cv2.INTER_CUBIC)
+	preprocss=my_Preprocess("../data/yundou-1.png",[8,8]);
 	
 	# LBP
-	my_rilbp = my_RILBP(radius=1, neighbors=8)
-	histogram_result = my_rilbp.get_lbp_histogram(img)
-	print histogram_result
+	my_rilbp = my_RILBP(radius=1, neighbors=6)
+	histogram_result = my_rilbp.get_lbp_histogram(preprocss.get_img_gray())
 	
 	# plot bar
 	x = range(len(histogram_result))
