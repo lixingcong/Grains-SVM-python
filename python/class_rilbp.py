@@ -171,7 +171,7 @@ class my_RILBP(object):
 		return self.histogram_x_width
 	
 if __name__ == '__main__':
-	preprocss=my_Preprocess("../data/yundou-1.png",[8,8]);
+	preprocss=my_Preprocess("../data/yundou-1.png");
 	
 	# LBP
 	my_rilbp = my_RILBP(radius=1, neighbors=6)
