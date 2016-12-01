@@ -64,6 +64,15 @@ public class My_Shape {
 		}
 	}
 	
+	public double get_humoments(){
+		Mat hu=new Mat();
+		Imgproc.HuMoments(this.moment_largest,hu);
+		double res=hu.get(0, 0)[0];
+		
+		if(res<=0.0)return 0.0;
+		if(res>=1.0)return 1.0;
+		return res;
+	}
 	
 	public void draw_contours_largest(){
 		Mat mat=new Mat(this.img.rows(),this.img.cols(),CvType.CV_8UC1);
