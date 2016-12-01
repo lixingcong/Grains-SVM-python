@@ -33,13 +33,12 @@ public class My_RILBP {
 	}
 	
 	public My_RILBP(double radius,int neighbors) {
-		My_RILBP.lbp_radius=radius;
-		My_RILBP.lbp_neighbors=neighbors;
-		
 		if(My_RILBP.dict_sum_to_rilbp == null){
 			//System.out.println("generating...");
+			My_RILBP.lbp_radius=radius;
+			My_RILBP.lbp_neighbors=neighbors;
 			My_RILBP.gen_dict_sum_to_rilbp();
-			My_RILBP.gen_dict_rilbp_to_histogram_x();	
+			My_RILBP.gen_dict_rilbp_to_histogram_x();
 		}
 	}
 	

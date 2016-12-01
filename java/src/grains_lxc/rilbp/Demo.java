@@ -18,7 +18,9 @@ public class Demo {
 	}
 	
 	public static void main(String[] args) {
-		My_RILBP my_rilbp=new My_RILBP();
-		My_RILBP my_rilbp1=new My_RILBP();
+		My_RILBP my_rilbp=new My_RILBP(3.0,10);
+		My_RILBP my_rilbp1=new My_RILBP(4.0,10);
+	
+
 	}
 }
