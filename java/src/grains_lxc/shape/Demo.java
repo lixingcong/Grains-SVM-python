@@ -5,7 +5,9 @@
 package grains_lxc.shape;
 
 import org.opencv.core.Core;
+import org.opencv.core.Mat;
 
+import grains_lxc.imshow.Imshow;
 import grains_lxc.preprocess.My_Preprocess;
 
 public class Demo {
@@ -20,6 +22,10 @@ public class Demo {
 		myshape.draw_contours_largest();
 		
 		myshape.get_humoments();
+		
+		Mat foreground=myshape.get_foreground();
+		Imshow ims1 = new Imshow("fore");
+		ims1.showImage(foreground);
 	}
 
 }

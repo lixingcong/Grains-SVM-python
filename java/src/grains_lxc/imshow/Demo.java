@@ -22,7 +22,7 @@ public class Demo {
 		// gray
 		Imgproc.cvtColor(mat1, mat2, Imgproc.COLOR_RGB2GRAY);
 		// resize window
-		Imshow ims1 = new Imshow("input",400,300);
+		Imshow ims1 = new Imshow("input",300,300);
 		ims1.showImage(mat1);
 		
 		Imshow ims2 = new Imshow("output");

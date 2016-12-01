@@ -136,10 +136,10 @@ class my_SHAPE(object):
 		return foreground
 		
 if __name__ == '__main__':
-# 	mypreprocess=my_Preprocess("../data/grains/heimi/1.jpg")
+# 	mypreprocess=my_Preprocess("../data/grains/candou/1.jpg")
 # 	cv2.namedWindow('bin',cv2.WINDOW_NORMAL)
 # 	cv2.resizeWindow('bin', 300,300)
-# 	myshape=my_SHAPE(mypreprocess.get_img_gray(),mypreprocess.get_img_binary())	
+# 	myshape=my_SHAPE(mypreprocess.get_img_gray())	
 # 	img=myshape.get_foreground()
 # 	cv2.imshow('i',mypreprocess.get_img_gray())
 # 	cv2.imshow('bin',img)

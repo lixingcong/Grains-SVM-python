@@ -11,7 +11,9 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
@@ -72,6 +74,21 @@ public class My_Shape {
 		if(res<=0.0)return 0.0;
 		if(res>=1.0)return 1.0;
 		return res;
+	}
+	
+	public Mat get_foreground(){
+		MatOfPoint2f points = new MatOfPoint2f(this.contours.get(this.area_largest_cnt_index).toArray());
+		Point center = new Point();
+		float[] radius=new float[1];
+		Imgproc.minEnclosingCircle(points,center,radius);
+		
+		int square=new Double(2*radius[0]).intValue();
+		int x1=new Double(center.x-radius[0]).intValue();
+		int y1=new Double(center.y-radius[0]).intValue();
+		
+		Rect roi=new Rect(x1,y1,square,square);
+		
+		return (new Mat(this.img,roi));
 	}
 	
 	public void draw_contours_largest(){
