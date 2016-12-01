@@ -4,6 +4,8 @@
  */
 package grains_lxc.rilbp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,18 +34,52 @@ public class My_RILBP {
 	public My_RILBP(double radius,int neighbors) {
 		My_RILBP.lbp_radius=radius;
 		My_RILBP.lbp_neighbors=neighbors;
+		My_RILBP.gen_dict_sum_to_rilbp();
 	}
 	
 	static private void gen_dict_sum_to_rilbp(){
+		int max_val=1<<lbp_neighbors;
+		dict_sum_to_rilbp=new HashMap<Integer, Integer>();
 		
+		for(int i=0;i<max_val;i++){
+			List<Integer> bits=new ArrayList<Integer>();
+			
+			for(int bit=0;bit<lbp_neighbors;bit++){
+				bits.add(new Integer(i & (1<<bit)) >> bit);
+			}
+			
+			int sum_=get_rilbp_from_bin(bits);
+			dict_sum_to_rilbp.put(i, sum_);
+		}
 	}
 	
-	static public int get_sum_from_bin(List<Integer> input_list){
+	// 计算一个二进制列表的对应十进制值
+	static private int get_sum_from_bin(List<Integer> input_list){
 		int res=0;
 		int len=input_list.size();
 		for(int i=0;i<len;i++){
 			res+=(input_list.get(i).intValue() << (i));
 		}
 		return res;
+	}
+	
+	// 循环不变LBP的最小值
+	static private int get_rilbp_from_bin(List<Integer> input_list){
+		int len=input_list.size();
+		int min_lbp=get_sum_from_bin(input_list);
+		int this_sum;
+		for(int i=1;i<len;i++){
+			Integer first_element=input_list.remove(0);
+			input_list.add(first_element);
+			this_sum=get_sum_from_bin(input_list);
+			if(this_sum<min_lbp)
+				min_lbp=this_sum;
+		}
+		
+		return min_lbp;
+	}
+	
+	static public Object get_d(){
+		return dict_sum_to_rilbp;
 	}
 }

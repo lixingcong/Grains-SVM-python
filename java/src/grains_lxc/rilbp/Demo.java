@@ -6,7 +6,9 @@ package grains_lxc.rilbp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.opencv.core.Core;
 
@@ -17,7 +19,12 @@ public class Demo {
 	
 	public static void main(String[] args) {
 		My_RILBP my_rilbp=new My_RILBP();
-		List<Integer> input_bin=new ArrayList<Integer>(Arrays.asList(1,1,1,1,0,0,0,1));
-		System.out.println(My_RILBP.get_sum_from_bin(input_bin));
+		
+		Map<Integer, Integer> dict_sum_to_rilbp=(Map<Integer, Integer>)my_rilbp.get_d();
+		
+		for(int i=0;i<256;i++){
+			System.out.print(i+": ");
+			System.out.println(dict_sum_to_rilbp.get(new Integer(i)));
+		}
 	}
 }
