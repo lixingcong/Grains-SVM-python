@@ -132,8 +132,8 @@ class my_RILBP(object):
 							w1 = (c2 - c) / (c2 - c1)
 							w2 = (c - c1) / (c2 - c1)
 							# 插值
-							pixels.append(int((w1 * self._get_pixel_else_0(int(r), int(c)) + \
-										   w2 * self._get_pixel_else_0(int(r), math.ceil(c))) / (w1 + w2)))
+							pixels.append((w1 * self._get_pixel_else_0(int(r), int(c)) + \
+										   w2 * self._get_pixel_else_0(int(r), math.ceil(c))) / (w1 + w2))
 						else:
 							# 双线性插值
 							pixels.append(self._get_pixel_else_0(int(r), int(c)))
