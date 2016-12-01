@@ -29,7 +29,7 @@ public class My_Preprocess {
 		this.img = new Mat();
 
 		Size s = new Size(resize_width, resize_height);
-		Imgproc.resize(mat, this.img, s);
+		Imgproc.resize(mat, this.img, s, 0, 0, Imgproc.INTER_CUBIC);
 
 		this.filter();
 		this.rgb2gray();
