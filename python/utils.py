@@ -30,9 +30,9 @@ def get_rgb_normolized(input_img, input_img_bin):
 	# 归一化
 	BGR = [x / total_valid_pixels for x in sum_BGR]
 	B, G, R = float(BGR[0]), float(BGR[1]), float(BGR[2])
-
+	
 	# Web 配色预览
-	# print "#%02x%02x%02x" % (int(R), int(G), int(B))
+	#print "#%02x%02x%02x" % (int(R), int(G), int(B))
 	
 	sum_BGR_last = B + G + R
 	return (R / sum_BGR_last, G / sum_BGR_last, B / sum_BGR_last,)
@@ -52,9 +52,9 @@ def normalize_from_list(input_list):
 	
 	
 if __name__ == '__main__':
-	# pic_prep = my_Preprocess("../data/s.png")
-	# print get_rgb_normolized(pic_prep.get_img(), pic_prep.get_img_binary())
+	pic_prep = my_Preprocess("../data/yundou-1.png")
+	print get_rgb_normolized(pic_prep.get_img(), pic_prep.get_img_binary())
 	
-	a = [[1, 2, 3], [3, 4, 5], [6, 7, 8]]
-	print normalize_from_list(a)
+	#a = [[1, 2, 3], [3, 4, 5], [6, 7, 8]]
+	#print normalize_from_list(a)
 	

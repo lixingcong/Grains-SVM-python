@@ -12,6 +12,8 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 
+import grains_lxc.preprocess.My_Preprocess;
+
 public class Demo {
 	
 	static {
@@ -19,11 +21,10 @@ public class Demo {
 	}
 	
 	public static void main(String[] args) {
-		Mat mat1 = Highgui.imread("/tmp/1.jpg");
-		Mat mat2 = new Mat(mat1.rows(),mat1.cols(),CvType.CV_8UC1); 
+		My_Preprocess mypreprocess=new My_Preprocess("../data/yundou-1.png");
 		My_Utils ut=new My_Utils();
 		
-		double[] rgb=(ut.get_rgb_normolized(mat1, mat2));
+		double[] rgb=(ut.get_rgb_normolized(mypreprocess.get_img(),mypreprocess.get_img_binary()));
 		
 		List<List<Double>> rgb_list=new ArrayList<List<Double>>();
 		List<Double> rgb_a_line=new ArrayList<Double>();

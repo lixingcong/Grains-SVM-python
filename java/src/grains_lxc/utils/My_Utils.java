@@ -18,7 +18,7 @@ public class My_Utils {
 
 	public double[] get_rgb_normolized(Mat input_img, Mat input_img_bin) {
 		int total_valid_pixels = 0;
-		double[] sum_BGR = new double[] { 0.0, 0.0, 0.0 }; // Blue Green Red
+		int[] sum_BGR = new int[] { 0, 0, 0 }; // Blue Green Red
 		int height = input_img_bin.rows();
 		int width = input_img_bin.cols();
 
@@ -27,28 +27,29 @@ public class My_Utils {
 				if (input_img_bin.get(y, x)[0] > 0) {
 					total_valid_pixels += 1;
 					double[] this_px = input_img.get(y, x);
-					sum_BGR[0] += this_px[0];
-					sum_BGR[1] += this_px[1];
-					sum_BGR[2] += this_px[2];
+					sum_BGR[0] += new Double(this_px[0]).intValue();
+					sum_BGR[1] += new Double(this_px[1]).intValue();
+					sum_BGR[2] += new Double(this_px[2]).intValue();
 				}
 			}
 		}
 
 		// 归一化
-		for (int i = 0; i < sum_BGR.length; i++) {
-			sum_BGR[i] /= total_valid_pixels;
+		double[] sum_BGR_double = new double[3];
+		for (int i = 0; i < 3; i++) {
+			sum_BGR_double[i] = sum_BGR[i] / total_valid_pixels;
 		}
+
+		double R = sum_BGR_double[2];
+		double G = sum_BGR_double[1];
+		double B = sum_BGR_double[0];
+		double RGB = R + G + B;
 
 		// web配色预览
 		// System.out.format("#%02x%02x%02x\n",
-		// new Double(sum_BGR[2]).intValue(),
-		// new Double(sum_BGR[1]).intValue(),
-		// new Double(sum_BGR[0]).intValue());
-
-		double R = sum_BGR[2];
-		double G = sum_BGR[1];
-		double B = sum_BGR[0];
-		double RGB = R + G + B;
+		// new Double(R).intValue(),
+		// new Double(G).intValue(),
+		// new Double(B).intValue());
 
 		return (new double[] { R / RGB, G / RGB, B / RGB });
 	}
