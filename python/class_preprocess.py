@@ -12,7 +12,7 @@ import numpy as np
 import sys
 
 class my_Preprocess(object):
-	def __init__(self, img_filename, resize=[72, 72]):
+	def __init__(self, img_filename, resize=[150, 150]):
 		self.img = cv2.imread(img_filename)
 		self.img_gray = None
 		self.img_bin = None
@@ -22,8 +22,8 @@ class my_Preprocess(object):
 			
 		self._filter()
 		self._rgb2gray()
-		self._gray2binary(thresh=130, maxval=255)
-		self._morphology(radius=3)
+		self._gray2binary()
+		self._morphology()
 		self._patch_img_bin_edge()
 		
 	def _rgb2gray(self):

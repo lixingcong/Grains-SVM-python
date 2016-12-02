@@ -38,7 +38,7 @@ class my_Features(object):
 		self.y=[] # 类别
 		
 		self.lbp_calculator=my_RILBP()
-		self.mycrop=my_Crop(blocks_split=[3,3])
+		self.mycrop=my_Crop(blocks_split=[4,4])
 		
 	def get_chinese_from_category(self,c):
 		c=str(int(c))
@@ -121,7 +121,7 @@ class my_Features(object):
 			
 			# LBP
 			img_foreground=myshape.get_foreground()
-			img_resized=cv2.resize(img_foreground, (48, 48), interpolation=cv2.INTER_CUBIC)
+			img_resized=cv2.resize(img_foreground, (100, 100), interpolation=cv2.INTER_CUBIC)
 			img_splited=self.mycrop.get_cropped_images(img_resized)			
 			for img_ in img_splited:
 				lbp_histogram=self.lbp_calculator.get_lbp_histogram(img_)

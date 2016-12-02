@@ -21,7 +21,7 @@ public class My_Preprocess {
 	private Mat img_bin = null;
 
 	public My_Preprocess(String img_filename) {
-		this(img_filename, 72.0, 72.0);
+		this(img_filename, 150.0, 150.0);
 	}
 
 	public My_Preprocess(String img_filename, double resize_width, double resize_height) {

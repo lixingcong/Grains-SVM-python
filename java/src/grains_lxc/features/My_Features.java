@@ -65,10 +65,10 @@ public class My_Features {
 	}
 
 	private void initilize() {
-		mycrop = new My_Crop(3, 3, false);
+		mycrop = new My_Crop(4, 4, false);
 		myrilbp = new My_RILBP();
 		myutils = new My_Utils();
-		resize_lbp_size = new Size(48.0, 48.0);
+		resize_lbp_size = new Size(100, 100);
 	}
 
 	public void load_saved_features() {
