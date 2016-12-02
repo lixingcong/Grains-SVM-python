@@ -50,6 +50,7 @@ public class My_Features {
 	private My_RILBP myrilbp=null;
 	private My_Crop mycrop=null;
 	private My_Utils myutils=null;
+	private Size resize_lbp_size = null;
 
 	public My_Features(String csv_itemlist, String csv_features_save) {
 		this.csv_features_save = csv_features_save;
@@ -57,6 +58,7 @@ public class My_Features {
 		this.mycrop=new My_Crop(3,3,false);
 		this.myrilbp=new My_RILBP();
 		this.myutils=new My_Utils();
+		this.resize_lbp_size=new Size(48.0,48.0);
 	}
 
 	public void load_saved_features() {
@@ -165,8 +167,7 @@ public class My_Features {
 		// LBP
 		Mat img_foreground=myshape.get_foreground();
 		Mat img_resized=new Mat();		
-		Size s = new Size(48.0,48.0);
-		Imgproc.resize(img_foreground, img_resized, s, 0, 0, Imgproc.INTER_CUBIC);
+		Imgproc.resize(img_foreground, img_resized, resize_lbp_size, 0, 0, Imgproc.INTER_CUBIC);
 		List<Mat> img_splited=mycrop.get_cropped_images(img_resized);
 		
 		for(Mat img_:img_splited){
