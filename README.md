@@ -17,7 +17,7 @@
 主要是csv文件与谷物文件的对应关系
 - 重命名data_文件夹为data
 - 将相应的谷物放进data/grains文件夹内
-- 编写对应的data/grain_list.csv，csv文件格式参考python/class_csv.py注释
+- 编写对应的data/grain_list.csv，csv文件格式参考python/class_features.py注释
 - 修改python/main.py中选择是否重新计算特征还是载入csv特征（见下文）
 - 运行cd python && python main.py
 
