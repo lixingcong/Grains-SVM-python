@@ -4,6 +4,8 @@
 '''
 Created on 2016年11月27日
 @author: li
+将csv文件转成libsvm专用的训练样本文件
+用于调用libsvm的grid.py进行交叉验证获得最佳C和gamma
 '''
 
 from class_features import my_Features
