@@ -26,8 +26,9 @@ with open('../data/sample_libsvm.txt','w') as f:
 		f.write(str(this_y)+" ")
 		
 		for j in range(len(feature)):
-			f.write(str(j+1)+":")
-			f.write(str(feature[j])+" ")
+			if str(feature[j]) != "":
+				f.write(str(j+1)+":")
+				f.write(str(feature[j])+" ")
 			
 		f.write('\n')
 			
