@@ -8,6 +8,9 @@ Created on 2016年11月26日
 Hu不变矩：
   - 具有平移、旋转、尺度不变性
   - 得出7个分量，但是实际应用中只用前2个分量
+
+注意： 当图像四周留空非常少的时候，get_foreground会返回空图像。
+因此必须裁剪样本四周留空，方便find_contours找到真正的边缘
 '''
 
 import cv2
@@ -136,16 +139,17 @@ class my_SHAPE(object):
 		return foreground
 		
 if __name__ == '__main__':
-# 	mypreprocess=my_Preprocess("../data/grains/candou/1.jpg")
+	mypreprocess=my_Preprocess("../data/yundou-1.png")
+	myshape=my_SHAPE(mypreprocess.get_img_gray())
+	myshape.draw_contours()
 # 	cv2.namedWindow('bin',cv2.WINDOW_NORMAL)
 # 	cv2.resizeWindow('bin', 300,300)
-# 	myshape=my_SHAPE(mypreprocess.get_img_gray())	
 # 	img=myshape.get_foreground()
 # 	cv2.imshow('i',mypreprocess.get_img_gray())
 # 	cv2.imshow('bin',img)
 # 	if cv2.waitKey(0) == 27:
 # 		cv2.destroyAllWindows()
-# 	sys.exit(0)
+	sys.exit(0)
 	
 	prefix_name = "huangdou"
 	for i in range(1, 11):
