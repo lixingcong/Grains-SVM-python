@@ -45,27 +45,19 @@ class my_Features(object):
 		return self.dict_category_to_chinese[c]
 	
 	def get_features_y_x(self):
-		if self.y == []:
-			print "features is Empty, Now loading from itemlist..."
-			self.calc_features_for_itemlist()
-		
 		return (self.y, self.x)
 	
 	# 从itemlist.csv中加载【待计算特征的文件】列表
 	def load_itemlist(self):
+		print "Now loading from itemlist: "+self.csv_itemlist
 		my_csv=my_CSV(self.csv_itemlist)
 		for line in my_csv.read(1,my_csv.get_total_rows()):
 			self.itemlist.append(line)
-			# grain category is known
-			if line[1] != '0':
-				self.dict_category_to_chinese[line[1]]=line[0]
+		
+		self.calc_features_for_itemlist()
 	
 	# 保存self.features中的内容到csv文件
 	def save_features(self):
-		if self.features == []:
-			print "features is Empty, Now loading from itemlist..."
-			self.calc_features_for_itemlist()
-			
 		my_csv=my_CSV(self.csv_features_save)
 		
 		data=[]
@@ -78,9 +70,11 @@ class my_Features(object):
 			data.append(this_line)
 		
 		my_csv.write(data)
+		print "features were saved to : "+self.csv_features_save
 	
 	# 从saved_features.csv中加载所有特征
 	def load_saved_features(self):
+		print "features are loading from : "+self.csv_features_save
 		my_csv=my_CSV(self.csv_features_save)
 		for line in my_csv.read(1,my_csv.get_total_rows()):
 			self.features.append(line)
@@ -92,7 +86,10 @@ class my_Features(object):
 	def _load_y_x_from_features(self):
 		for line in self.features:
 			self.x.append(line[2:])
-			self.y.append(int(line[1]))	
+			self.y.append(int(line[1]))
+			# grain category is known
+			if line[1] != '0':
+				self.dict_category_to_chinese[line[1]]=line[0]
 	
 	# 计算特征
 	def calc_features_for_itemlist(self):
@@ -145,9 +142,9 @@ class my_Features(object):
 		self.x = normalize_from_list(self.x)
 		
 if __name__ == '__main__':
-	my_features=my_Features('../data/grain_list.csv', '../data/grain_features.csv')
-	#my_features.load_itemlist()
-	my_features.load_saved_features()
+	my_features=my_Features('../data/test_list.csv', '../data/test_features.csv')
+	my_features.load_itemlist()
+# 	my_features.load_saved_features()
 	#my_features.calc_features_for_itemlist()
 	#my_features.save_features()
 	print my_features.get_features_y_x()[0]
