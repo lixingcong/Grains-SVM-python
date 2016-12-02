@@ -51,14 +51,24 @@ public class My_Features {
 	private My_Crop mycrop = null;
 	private My_Utils myutils = null;
 	private Size resize_lbp_size = null;
-
+	
+	public My_Features(String img_filename){
+		this.initilize();
+		this.calc_feature_from_filename(img_filename, 0.0);
+		this.normalize_x();
+	}
+	
 	public My_Features(String csv_itemlist, String csv_features_save) {
 		this.csv_features_save = csv_features_save;
 		this.csv_itemlist = csv_itemlist;
-		this.mycrop = new My_Crop(3, 3, false);
-		this.myrilbp = new My_RILBP();
-		this.myutils = new My_Utils();
-		this.resize_lbp_size = new Size(48.0, 48.0);
+		this.initilize();
+	}
+
+	private void initilize() {
+		mycrop = new My_Crop(3, 3, false);
+		myrilbp = new My_RILBP();
+		myutils = new My_Utils();
+		resize_lbp_size = new Size(48.0, 48.0);
 	}
 
 	public void load_saved_features() {
