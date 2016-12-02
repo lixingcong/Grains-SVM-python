@@ -8,8 +8,10 @@ Created on 2016年11月27日
 
 from class_features import my_Features
 
+csv_filename='../data/grain_features.csv'
+print "Converting "+csv_filename+" to libsvm format..."
 
-features=my_Features(None,'../data/grain_features.csv')
+features=my_Features(None,csv_filename)
 
 features.load_saved_features()
 
