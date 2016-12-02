@@ -27,6 +27,7 @@ public class My_SVM extends StatModel {
 	private CvSVMParams my_svm_params = new CvSVMParams();
 
 	public My_SVM(double svm_param_C, double svm_param_gamma) {
+		System.out.println("C, gamma= "+svm_param_C+", "+svm_param_gamma);
 		this.model_svm = new CvSVM();
 		this.my_svm_params.set_svm_type(CvSVM.C_SVC);
 		this.my_svm_params.set_kernel_type(CvSVM.RBF);

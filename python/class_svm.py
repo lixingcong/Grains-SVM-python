@@ -26,7 +26,7 @@ class my_SVM(StatModel):
 		param_C = 1 if C is None else C
 		param_gamma = (1.0 / len(train_x[0])) if gamma is None else gamma 
 		
-		print "c,gamma=", param_C, param_gamma
+		print "C, gamma=", param_C, ",", param_gamma
 		
 		# setting algorithm parameters
 		params = dict(kernel_type=cv2.SVM_RBF,

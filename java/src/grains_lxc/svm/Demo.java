@@ -10,9 +10,9 @@ import grains_lxc.features.My_Features;
 public class Demo {
 
 	public static void main(String[] args) {
-		My_SVM my_svm=new My_SVM(2.82842712475,0.25);
-		My_Features features_train=new My_Features("../data/grain_features.csv");
-		My_Features features_test=new My_Features("../data/test_features.csv");
+		My_SVM my_svm=new My_SVM(8.0, 0.0078125);
+		My_Features features_train=new My_Features("/tmp/list.csv","../data/grain_features_cross_validation.csv");
+		My_Features features_test=new My_Features("/tmp/test.csv","../data/test_features_cross_validation.csv");
 		
 		// 载入特征
 		features_train.load_saved_features();
