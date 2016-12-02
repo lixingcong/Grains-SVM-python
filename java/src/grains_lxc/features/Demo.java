@@ -9,7 +9,8 @@ import java.util.List;
 public class Demo {
 	public static void main(String[] args) {
 		My_Features f = new My_Features("../data/test_list.csv","../data/test_features.csv");
-		f.load_saved_features();
+//		f.load_saved_features();
+		f.load_itemlist();
 		f.save_features("/tmp/1.csv");
 		// System.out.println(f.get_chinese_from_category(1));
 

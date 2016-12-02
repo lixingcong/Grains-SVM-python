@@ -116,15 +116,23 @@ public class My_Features {
 	public void load_itemlist(){
 		My_CSV my_csv = new My_CSV(this.csv_itemlist);
 		itemlist=my_csv.read();
+		int item_qty=itemlist.size();
+		int index=1;
 		for(String line:itemlist){
 			String[] this_line_spilted=line.split(this.csv_split_char);
 			dict_category_to_chinese.put(this_line_spilted[1], this_line_spilted[0]);
 		}
-		for(int i=0;i<itemlist.size();i++)
+		for(int i=0;i<itemlist.size();i++){
+			System.out.println(index+"/"+item_qty);
 			calc_a_features_from_itemlist(i);
+			index+=1;
+		}
 		
 		// normalize
 		normalize_x();
+		
+		// convert y x to feature string
+		generate_features_from_y_x();
 	}
 	
 	private void calc_a_features_from_itemlist(int index){
@@ -140,7 +148,7 @@ public class My_Features {
 	}
 	
 	private void calc_feature_from_filename(String filename,double this_y){
-		List<Double> this_feature=null;
+		List<Double> this_feature=new ArrayList<Double>();
 		
 		My_Preprocess mypreprocess=new My_Preprocess(filename);
 		
