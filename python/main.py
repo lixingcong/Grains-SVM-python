@@ -16,7 +16,7 @@ if __name__ == '__main__':
 	svm = my_SVM()
 	svm_param_C, svm_param_gamma = 2.82842712475,0.25
 	
-	trained_model_filename = "cv2_svm_model.xml"
+	trained_model_filename = "../data/cv2_svm_model.xml"
 	
 	features_train = my_Features('../data/grain_psd_list.csv', '../data/grain_features.csv')
 # 	features_train.load_itemlist()

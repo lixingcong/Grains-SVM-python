@@ -50,6 +50,9 @@ public class Demo {
 		// 正确率
 		System.out.format("train_num=%d, test_num=%d, predict_correct_num=%d\n",train_number, test_number, test_number - predict_error_counter);
 		System.out.format("predict accuracy=%.1f%%\n", (100 * (double)(test_number - predict_error_counter) / test_number));
+		
+		// 保存svm模型
+		my_svm.save();
 	}
 
 }

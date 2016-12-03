@@ -22,7 +22,7 @@ public class My_SVM extends StatModel {
 	}
 
 	private CvSVM model_svm = null;
-	private String trained_model_filename = "cv2_svm_model.xml";
+	final private String trained_model_filename = "../data/cv2_svm_model.xml";
 
 	private CvSVMParams my_svm_params = new CvSVMParams();
 
@@ -77,11 +77,19 @@ public class My_SVM extends StatModel {
 		return result;
 	}
 
+	public void load() {
+		this.load(trained_model_filename);
+	}
+	
 	@Override
 	public void load(String filename) {
 		model_svm.load(filename);
 	}
 
+	public void save() {
+		this.save(trained_model_filename);
+	}
+	
 	@Override
 	public void save(String filename) {
 		model_svm.save(filename);
