@@ -30,7 +30,8 @@ public class My_CSV {
 
 			try (BufferedReader br = new BufferedReader(new FileReader(csv_file))) {
 				while ((line = br.readLine()) != null) {
-					content_read.add(line);
+					if(line.length()!=0)
+						content_read.add(line);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
