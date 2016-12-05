@@ -10,48 +10,36 @@ import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 public class My_Utils {
 
 	public My_Utils() {
 	}
 
-	public double[] get_rgb_normolized(Mat input_img, Mat input_img_bin) {
+	public double get_Hue(Mat input_img, Mat input_img_bin) {
 		int total_valid_pixels = 0;
-		int[] sum_BGR = new int[] { 0, 0, 0 }; // Blue Green Red
+		int sum_H=0;
 		int height = input_img_bin.rows();
 		int width = input_img_bin.cols();
+		
+		Mat img_hsv=new Mat();
+		Imgproc.cvtColor(input_img, img_hsv, Imgproc.COLOR_BGR2HSV);
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				if (input_img_bin.get(y, x)[0] > 0) {
 					total_valid_pixels += 1;
-					double[] this_px = input_img.get(y, x);
-					sum_BGR[0] += new Double(this_px[0]).intValue();
-					sum_BGR[1] += new Double(this_px[1]).intValue();
-					sum_BGR[2] += new Double(this_px[2]).intValue();
+					double[] this_px = img_hsv.get(y, x);
+					sum_H += new Double(this_px[0]).intValue();
 				}
 			}
 		}
 
 		// 归一化
-		double[] sum_BGR_double = new double[3];
-		for (int i = 0; i < 3; i++) {
-			sum_BGR_double[i] = sum_BGR[i] / total_valid_pixels;
-		}
-
-		double R = sum_BGR_double[2];
-		double G = sum_BGR_double[1];
-		double B = sum_BGR_double[0];
-		double RGB = R + G + B;
-
-		// web配色预览
-		// System.out.format("#%02x%02x%02x\n",
-		// new Double(R).intValue(),
-		// new Double(G).intValue(),
-		// new Double(B).intValue());
-
-		return (new double[] { R / RGB, G / RGB, B / RGB });
+		double sum_H_avg=(new Double(sum_H).doubleValue())/total_valid_pixels;
+		
+		return Math.cos(Math.PI * sum_H_avg / 90);
 	}
 
 	public List<List<Double>> normalize_from_list(List<List<Double>> input_list) {

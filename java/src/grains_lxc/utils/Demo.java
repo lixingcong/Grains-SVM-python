@@ -24,21 +24,8 @@ public class Demo {
 		My_Preprocess mypreprocess=new My_Preprocess("../data/yundou-1.png");
 		My_Utils ut=new My_Utils();
 		
-		double[] rgb=(ut.get_rgb_normolized(mypreprocess.get_img(),mypreprocess.get_img_binary()));
+		double hue=(ut.get_Hue(mypreprocess.get_img(),mypreprocess.get_img_binary()));
 		
-		List<List<Double>> rgb_list=new ArrayList<List<Double>>();
-		List<Double> rgb_a_line=new ArrayList<Double>();
-		for(double i:rgb){
-			System.out.print(i+"\n");
-			rgb_a_line.add(i);
-		}
-		rgb_list.add(rgb_a_line);
-		
-		List<List<Double>> normalized=ut.normalize_from_list(rgb_list);
-		for(List<Double> i:normalized){
-			for(Double j:i){
-				System.out.println(j);
-			}
-		}
+		System.out.print(hue+"\n");
 	}
 }

@@ -40,7 +40,7 @@ public class My_Preprocess {
 
 	private void rgb2gray() {
 		img_gray = new Mat();
-		Imgproc.cvtColor(this.img, this.img_gray, Imgproc.COLOR_RGB2GRAY);
+		Imgproc.cvtColor(this.img, this.img_gray, Imgproc.COLOR_BGR2GRAY);
 	}
 
 	private void filter() {
