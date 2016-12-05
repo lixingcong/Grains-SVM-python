@@ -12,7 +12,7 @@ from class_preprocess import my_Preprocess
 from class_rilbp import my_RILBP
 from class_shape import my_SHAPE
 from class_crop import my_Crop
-from utils import get_rgb_normolized, normalize_from_list
+from utils import get_Hue, normalize_from_list
 import cv2
 
 # CSV: splited by common
@@ -109,10 +109,8 @@ class my_Features(object):
 			# open a img and pre-process
 			img=my_Preprocess(filename)
 			
-			# RGB fetures
-			R,G,B=get_rgb_normolized(img.get_img(), img.get_img_binary())
-			this_feature.append(R)
-			this_feature.append(G)
+			# Hue
+			this_feature.append(get_Hue(img.get_img(), img.get_img_binary()))
 			
 			# Hu(1)
 			myshape=my_SHAPE(img.get_img_gray())
