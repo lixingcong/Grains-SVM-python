@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	
 	trained_model_filename = "../data/cv2_svm_model.xml"
 	
-	features_train = my_Features('../data/grain_list.csv', '../data/_grain_features.csv')
+	features_train = my_Features('../data/grain_list.csv', '../data/grain_features.csv')
 	features_train.load_itemlist()
 	features_train.save_features()
 # 	features_train.load_saved_features()
@@ -34,7 +34,7 @@ if __name__ == '__main__':
 	svm.train(train_x, train_y, C=svm_param_C, gamma=svm_param_gamma)
 	
 	# load test csv
-	features_test = my_Features('../data/test_list.csv', '../data/_test_features.csv')
+	features_test = my_Features('../data/test_list.csv', '../data/test_features.csv')
 	features_test.load_itemlist()
 	features_test.save_features()
 # 	features_test.load_saved_features()

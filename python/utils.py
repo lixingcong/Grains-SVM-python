@@ -35,6 +35,7 @@ def get_Hue(input_img, input_img_bin):
 def normalize_from_list(input_list):
 	len_of_line = len(input_list[0])
 	res = []
+	print len(input_list)
 	for row in input_list:
 		a1 = np.asarray(row, dtype=np.float64)
 		a2 = np.zeros((len_of_line,), dtype=np.float64)

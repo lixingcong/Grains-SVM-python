@@ -119,12 +119,15 @@ class my_Features(object):
 			
 			# LBP
 			img_foreground=myshape.get_foreground()
-			img_resized=cv2.resize(img_foreground, (100, 100), interpolation=cv2.INTER_CUBIC)
-			img_splited=self.mycrop.get_cropped_images(img_resized)			
-			for img_ in img_splited:
-				lbp_histogram=self.lbp_calculator.get_lbp_histogram(img_)
-				for histogram_y in lbp_histogram:
-					this_feature.append(histogram_y)
+# 			img_resized=cv2.resize(img_foreground, (100, 100), interpolation=cv2.INTER_CUBIC)
+# 			img_splited=self.mycrop.get_cropped_images(img_resized)			
+# 			for img_ in img_splited:
+# 				lbp_histogram=self.lbp_calculator.get_lbp_histogram(img_)
+# 				for histogram_y in lbp_histogram:
+# 					this_feature.append(histogram_y)
+			lbp_histogram=self.lbp_calculator.get_lbp_histogram(img_foreground)
+			for histogram_y in lbp_histogram:
+				this_feature.append(histogram_y)
 						
 			self.features.append(this_feature)
 			
