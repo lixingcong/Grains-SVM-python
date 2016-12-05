@@ -27,7 +27,7 @@ class my_Preprocess(object):
 		self._patch_img_bin_edge()
 		
 	def _rgb2gray(self):
-		self.img_gray = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
+		self.img_gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
 		
 	def _gray2binary(self, thresh=127, maxval=255):
 		ret, img_thresh = cv2.threshold(self.img_gray, thresh, maxval, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
