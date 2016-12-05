@@ -16,13 +16,13 @@ public class Demo {
 		
 		// 载入特征
 //		features_train.load_saved_features();
-		features_test.load_saved_features();
+//		features_test.load_saved_features();
 		
 		// 如果不载入特征，可以重新计算特征
 		features_train.load_itemlist();
 		features_train.save_features();
-//		features_test.load_itemlist();
-//		features_test.save_features();
+		features_test.load_itemlist();
+		features_test.save_features();
 		
 		List<List<Double>> train_x=features_train.get_features_x();
 		List<Double> train_y=features_train.get_features_y();

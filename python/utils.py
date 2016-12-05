@@ -46,7 +46,7 @@ def normalize_from_list(input_list):
 	
 	
 if __name__ == '__main__':
-	prefix="yundou"
+	prefix="huangdou"
 	for i in range(1,19):
 		pic_prep = my_Preprocess("../data/grains_6p/"+prefix+"/"+str(i)+".jpg")
 		print get_Hue(pic_prep.get_img(), pic_prep.get_img_binary())

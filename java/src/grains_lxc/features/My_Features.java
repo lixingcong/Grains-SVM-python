@@ -174,14 +174,15 @@ public class My_Features {
 
 		// LBP
 		Mat img_foreground = myshape.get_foreground();
-		Mat img_resized = new Mat();
-		Imgproc.resize(img_foreground, img_resized, resize_lbp_size, 0, 0, Imgproc.INTER_CUBIC);
-		List<Mat> img_splited = mycrop.get_cropped_images(img_resized);
-
-		for (Mat img_ : img_splited) {
-			List<Double> lbp_histogram = myrilbp.get_lbp_histogram(img_);
-			this_feature.addAll(lbp_histogram);
-		}
+//		Mat img_resized = new Mat();
+//		Imgproc.resize(img_foreground, img_resized, resize_lbp_size, 0, 0, Imgproc.INTER_CUBIC);
+//		List<Mat> img_splited = mycrop.get_cropped_images(img_resized);
+//
+//		for (Mat img_ : img_splited) {
+//			List<Double> lbp_histogram = myrilbp.get_lbp_histogram(img_);
+//			this_feature.addAll(lbp_histogram);
+//		}
+		this_feature.addAll(myrilbp.get_lbp_histogram(img_foreground));
 
 		// add to y and x
 		x.add(this_feature);
