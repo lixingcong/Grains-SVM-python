@@ -39,7 +39,7 @@ public class My_Utils {
 		// 归一化
 		double sum_H_avg=(new Double(sum_H).doubleValue())/total_valid_pixels;
 		
-		return Math.cos(Math.PI * sum_H_avg / 90);
+		return (1+Math.cos(Math.PI * sum_H_avg / 90))/2;
 	}
 
 	public List<List<Double>> normalize_from_list(List<List<Double>> input_list) {

@@ -29,7 +29,7 @@ def get_Hue(input_img, input_img_bin):
 		
 	sum_H_avg=float(sum_H)/total_valid_pixels
 	
-	return math.cos(math.pi * sum_H_avg / 90 )
+	return (1+math.cos(math.pi * sum_H_avg / 90 ))/2
 
 # 线性标准化，返回list
 def normalize_from_list(input_list):

@@ -21,7 +21,7 @@ public class Demo {
 	}
 	
 	public static void main(String[] args) {
-		My_Preprocess mypreprocess=new My_Preprocess("../data/yundou-1.png");
+		My_Preprocess mypreprocess=new My_Preprocess("../data/grains_6p/yundou/1.jpg");
 		My_Utils ut=new My_Utils();
 		
 		double hue=(ut.get_Hue(mypreprocess.get_img(),mypreprocess.get_img_binary()));
