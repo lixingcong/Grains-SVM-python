@@ -28,8 +28,10 @@ def get_Hue(input_img, input_img_bin):
 				sum_H+=img_hsv[y,x][0]
 		
 	sum_H_avg=float(sum_H)/total_valid_pixels
+	# 实质上将0-180值范围映射到cos(2pi*2*sum_H_avg/360)和cos(2pi*2*sum_H_avg/360)
+	sum_H_avg_periodically=math.pi * sum_H_avg / 90
 	
-	return (1+math.cos(math.pi * sum_H_avg / 90 ))/2
+	return ((1+math.cos(sum_H_avg_periodically))/2,(1+math.sin(sum_H_avg_periodically))/2)
 
 # 线性标准化，返回list
 def normalize_from_list(input_list):
@@ -47,7 +49,7 @@ def normalize_from_list(input_list):
 	
 	
 if __name__ == '__main__':
-	prefix="huangdou"
+	prefix="lvdou"
 	for i in range(1,19):
 		pic_prep = my_Preprocess("../data/grains_6p/"+prefix+"/"+str(i)+".jpg")
 		print get_Hue(pic_prep.get_img(), pic_prep.get_img_binary())
