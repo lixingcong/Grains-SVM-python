@@ -17,7 +17,7 @@ public class My_Utils {
 	public My_Utils() {
 	}
 
-	public double get_Hue(Mat input_img, Mat input_img_bin) {
+	public double[] get_Hue(Mat input_img, Mat input_img_bin) {
 		int total_valid_pixels = 0;
 		int sum_H=0;
 		int height = input_img_bin.rows();
@@ -36,10 +36,11 @@ public class My_Utils {
 			}
 		}
 
-		// 归一化
 		double sum_H_avg=(new Double(sum_H).doubleValue())/total_valid_pixels;
+		// 周期化映射
+		double sum_H_avg_periodically=Math.PI * sum_H_avg / 90;
 		
-		return (1+Math.cos(Math.PI * sum_H_avg / 90))/2;
+		return (new double[] {(1+Math.cos(sum_H_avg_periodically))/2,(1+Math.sin(sum_H_avg_periodically))/2 });
 	}
 
 	public List<List<Double>> normalize_from_list(List<List<Double>> input_list) {

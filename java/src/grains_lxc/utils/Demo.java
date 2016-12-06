@@ -24,8 +24,8 @@ public class Demo {
 		My_Preprocess mypreprocess=new My_Preprocess("../data/grains_6p/yundou/1.jpg");
 		My_Utils ut=new My_Utils();
 		
-		double hue=(ut.get_Hue(mypreprocess.get_img(),mypreprocess.get_img_binary()));
+		double[] hue=(ut.get_Hue(mypreprocess.get_img(),mypreprocess.get_img_binary()));
 		
-		System.out.print(hue+"\n");
+		System.out.println(hue[0]+", "+hue[1]);
 	}
 }
