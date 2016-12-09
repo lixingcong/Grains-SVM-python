@@ -171,15 +171,33 @@ class my_RILBP(object):
 		return self.histogram_x_width
 	
 if __name__ == '__main__':
-	preprocss=my_Preprocess("../data/yundou-1.png");
+	pref="../data/grains_6p/"
+	filena="huangdou/5.jpg"
+	preprocss=my_Preprocess(pref+filena);
 	
 	# LBP
-	my_rilbp = my_RILBP(radius=1, neighbors=6)
+	my_rilbp = my_RILBP(radius=1, neighbors=8)
 	histogram_result = my_rilbp.get_lbp_histogram(preprocss.get_img_gray())
+
+	import threading
 	
-	# plot bar
-	x = range(len(histogram_result))
-	y = histogram_result
-	plt.bar(x, y, color='r')
-	plt.title("histogram")
-	plt.show()
+	def worker1(img1):
+		cv2.namedWindow('input',cv2.WINDOW_NORMAL)
+		cv2.resizeWindow('input', 200,200)
+		cv2.imshow("input",img1);
+		cv2.waitKey(0)
+		cv2.destroyAllWindows();
+		
+	def worker2(his,filena):
+		# plot bar
+		x = range(len(his))
+		y = his
+		plt.bar(x, y, color='r')
+		plt.title("histogram of LBP, file="+filena)
+		plt.show()
+
+	t1 = threading.Thread(target=worker1,args=(preprocss.get_img(),))
+	t1.start()
+	
+	t2 = threading.Thread(target=worker2,args=(histogram_result,filena,))
+	t2.start()
